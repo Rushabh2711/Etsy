@@ -24,6 +24,15 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.post('/countries', async (req, res) => {
+    try {
+        const countries = await User.getCountries(req.body);
+        res.status(200).send(countries);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
 
 
 

@@ -1,4 +1,3 @@
-const { use } = require('../app');
 const db = require('../database');
 
 class User {
@@ -95,6 +94,79 @@ class User {
             })
         })
     }
+
+    static async getCountries() {
+        const query = "SELECT * FROM country";
+        return new Promise((res, rej) => {
+            db.query(query, async (err, result) => {
+                if(err) {
+                    rej(err);
+                }
+                res(result);
+            })
+        })
+    }
+
+    static async findShop(userid) {
+        const query = "SELECT * FROM shop WHERE user_id = ?";
+        return new Promise((res, rej) => {
+            db.query(query, [userid], async (err, result) => {
+                if(err) {
+                    rej(err);
+                }
+                res(result);
+            })
+        })
+    }
+
+    static async checkShopAvailability(shopName) {
+        const query = "SELECT shop_id FROM shop WHERE name = ?";
+        return new Promise((res, rej) => {
+            db.query(query, [shopName], async (err, result) => {
+                if(err) {
+                    rej(err);
+                }
+                res(result);
+            })
+        })
+    }
+
+    static async getShopDetails(shop_id) {
+        const query = "SELECT * FROM shop WHERE shop_id = ?";
+        return new Promise((res, rej) => {
+            db.query(query, [shop_id], async (err, result) => {
+                if(err) {
+                    rej(err);
+                }
+                res(result[0]);
+            })
+        })
+    }
+
+    //  --------------- need to change ---------------------
+    // static async upadteShopDetails(user) {   
+    //     const query = "UPDATE shop SET username = ?, password = ?, about = ?, dob = ?, address = ?, city = ?, country = ?, gender = ?, phoneno = ? WHERE user_id = ?";
+    //     return new Promise((res, rej) => {
+    //         db.query(query,
+    //             [user.username,
+    //             user.password,
+    //             user.about,
+    //             user.dob,
+    //             user.address,
+    //             user.city,
+    //             user.country,
+    //             user.gender,
+    //             user.phoneno,
+    //             user.user_id] ,
+    //             async (err, result) => {
+    //             if(err) {
+    //                 rej(err);
+    //             }
+    //             res(result[0]);
+    //         })
+    //     })
+    // }
+
 }
 
 module.exports = User;

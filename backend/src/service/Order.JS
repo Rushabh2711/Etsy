@@ -2,6 +2,7 @@ const db = require('../database');
 
 class Order {
 
+
 }
 
-exports.module = Order
+module.exports = Order

@@ -39,6 +39,44 @@ router.post('/update', async (req, res) => {
     }
 });
 
+router.post('/findShop', async (req, res) => {
+    try {
+        const shop = await User.findShop(req.body.user_id);
+        res.status(200).send(shop);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
+router.post('/checkShopAvailability', async (req, res) => {
+    try {
+        const shopId = await User.checkShopAvailability(req.body.shopName);
+        res.status(200).send(shopId);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+})
+
+router.post('/getShopDetails', async (req, res) => {
+    try {
+        const shop = await User.getShopDetails(req.body.shop_id);
+        res.status(200).send(shop);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
+// router.post('/upadteShopDetails', async (req, res) => {
+//     try {
+//         const shop = await User.upadteShopDetails(req.body);
+//         res.status(200).send(shop);
+//     } catch (e) {
+//         res.status(400).send(e);
+//     }
+// });
+
+
+
 
 
 module.exports = router;
