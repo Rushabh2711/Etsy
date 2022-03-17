@@ -1,13 +1,48 @@
+import React, {useState, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
+import STRINGS from '../constant';
+import axios from 'axios';
 
 
 
 const Registration = (props) => {
+
+  const [isError, setIsError] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+
+
+  const handleRegistration = () => {
+    if(username === "" || email === "" || password === "") {
+      setIsError(true);
+      return;
+    }
+    var data = {
+      username,
+      password,
+      email
+    };
+    axios.post(STRINGS.url+'/register',data)
+        .then(response => {
+            console.log("Status Code : ",response.data);
+            if(response.status === 200){
+              props.handleClose()
+              setIsError(false);
+              props.loginOpen();
+            }else{
+              setIsError(true);
+            }
+        }).catch(c => {
+          setIsError(true);
+        });
+  }
 
    const style = {
       position: 'absolute',
@@ -26,7 +61,7 @@ const Registration = (props) => {
       <div>
         <Modal
           open={props.open}
-          onClose={props.handleClose}
+          onClose={() => {props.handleClose(); setIsError(false);}}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -37,16 +72,18 @@ const Registration = (props) => {
             <div>
              <TextField id="Email" 
                label="Email"
-               error={false} 
+               error={isError} 
                variant="outlined"
-               margin="dense" />
+               margin="dense"
+               onChange={(e) => setEmail(e.target.value)} />
           </div>
           <div>
              <TextField id="username" 
                label="Username"
                error={false} 
                variant="outlined"
-               margin="dense" />
+               margin="dense"
+               onChange={(e) => setUsername(e.target.value)} />
           </div>
           
           <div>
@@ -54,10 +91,11 @@ const Registration = (props) => {
              label="Password" 
              type="password" 
              variant="outlined" 
-             margin="dense" />
+             margin="dense"
+             onChange={(e) => setPassword(e.target.value)} />
          </div>
          <div>
-         <Button style={{backgroundColor: "#000000", color: "#ffffff"}} variant="outlined">Registration</Button>
+         <Button style={{backgroundColor: "#000000", color: "#ffffff"}} variant="outlined" onClick={() => handleRegistration()}>Registration</Button>
          </div>
           </Box>
         </Modal>

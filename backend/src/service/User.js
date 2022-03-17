@@ -143,6 +143,23 @@ class User {
         })
     }
 
+    static async addShopDetails(shop) {
+        const query = "INSERT INTO shop(user_id, image, name) VALUES(?,?,?)";
+        return new Promise((res, rej) => {
+            db.query(query, [shop.userid, shop.image, shop.name] , async (err, result) => {
+                if(err) {
+                    rej(err);
+                }
+                try {
+                    const shopDetails = await this.findShop(shop.userid);
+                    res(shopDetails)
+                } catch (error) {
+                    rej(error)
+                }
+            })
+        })
+    }
+
     //  --------------- need to change ---------------------
     // static async upadteShopDetails(user) {   
     //     const query = "UPDATE shop SET username = ?, password = ?, about = ?, dob = ?, address = ?, city = ?, country = ?, gender = ?, phoneno = ? WHERE user_id = ?";

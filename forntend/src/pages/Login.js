@@ -1,13 +1,50 @@
+import React, {useState, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
+import STRINGS from '../constant';
+import axios from 'axios';
+import { signin, userLogin } from '../actions';
 
 
 
 const Login = (props) => {
+
+  const [isError, setIsError] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const LoggedInUSer = useSelector(state => state.LoggedInUSer);
+  const dispatch = useDispatch();
+
+
+  const handleLogin = () => {
+    if(username === "" || password === "") {
+      setIsError(true);
+      return;
+    }
+    var data = {
+      username,
+      password
+    }
+    axios.post(STRINGS.url+'/login',data)
+        .then(response => {
+            console.log("Status Code : ",response.data);
+            if(response.status === 200){
+                props.handleClose();
+                dispatch(signin(response.data.user_id));
+                dispatch(userLogin(response.data));
+                localStorage.setItem("userId", JSON.stringify(response.data));
+            }else{
+                setIsError(true);
+            }
+        }).catch(c => {
+          setIsError(true);
+        });
+
+  }
 
    const style = {
       position: 'absolute',
@@ -37,18 +74,21 @@ const Login = (props) => {
           <div>
              <TextField id="username" 
                label="Username"
-               error={false} 
-               variant="outlined" />
+               error={isError} 
+               variant="outlined"
+               onChange={(e) => setUsername(e.target.value)} />
           </div>
           <div>
              <TextField id="password" 
              label="Password" 
              type="password" 
+             error={isError} 
              variant="outlined" 
-             margin="dense" />
+             margin="dense"
+             onChange={(e) => setPassword(e.target.value)} />
          </div>
          <div>
-         <Button style={{backgroundColor: "#000000", color: "#ffffff"}} variant="outlined">LogIn</Button>
+         <Button style={{backgroundColor: "#000000", color: "#ffffff"}} variant="outlined" onClick={handleLogin}>LogIn</Button>
          </div>
         <Link
             component="button"

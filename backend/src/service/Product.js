@@ -15,13 +15,14 @@ class Product {
     }
 
     static async addProduct(product) {
-        const query = "INSERT INTO product(shop_id, category_id, count, name , description, price, sell_count) VALUE(?,?,?,?,?,?,?)";
+        const query = "INSERT INTO product(shop_id, category_id, count, name ,image , description, price, sell_count) VALUE(?,?,?,?,?,?,?,?)";
         return new Promise((res, rej) => {
             db.query(query,
                 [product.shop_id, 
                     product.category_id, 
                     product.count, 
                     product.name, 
+                    product.image,
                     product.description, 
                     product.price, 
                     product.sell_count],

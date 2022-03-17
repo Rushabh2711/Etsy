@@ -10,6 +10,8 @@ import Cart from "./pages/Cart";
 import Favorite from "./pages/Favorite";
 import Shop from "./pages/Shop";
 import EditProfile from "./pages/EditProfile";
+import MyOrder from "./pages/MyOrder";
+import Item from "./pages/Item";
 
 function App() {
   return (
@@ -22,7 +24,10 @@ function App() {
               <Route path="/cart" element={<Cart />} />
               <Route path="/favorite" element={<Favorite />} />
               <Route path="/shop" element={<Shop />} />
+              <Route path="/shop/:shopId" element={<Shop />} />
               <Route path="/EditProfile" element={<EditProfile />} />
+              <Route path="/myorder" element={<MyOrder />} />
+              <Route path="/item" element={<Item />} />
             </Routes>
           </BrowserRouter>
       {/* <Footer/> */}
