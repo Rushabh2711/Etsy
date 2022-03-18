@@ -141,7 +141,7 @@ class User {
                 if(err) {
                     rej(err);
                 }
-                res(result);
+                res(result[0]);
             })
         })
     }

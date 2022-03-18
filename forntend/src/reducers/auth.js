@@ -44,3 +44,14 @@ export const editProductReducer = (state = {}, action) => {
             return state;
     }
 };
+
+export const addTocartReducer = (state = [], action) => {
+    switch (action.type){
+        case 'ADDTOCART':
+            return [...state, action.payload];
+        case 'CLEARCART':
+            return [];    
+        default: 
+            return state;
+    }
+};

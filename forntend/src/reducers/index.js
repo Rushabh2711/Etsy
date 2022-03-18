@@ -1,4 +1,4 @@
-import {loggedReducer, userSignUpReducer, currencyReducer, productReducer, editProductReducer}  from "./auth";
+import {loggedReducer, userSignUpReducer, currencyReducer, productReducer, editProductReducer, addTocartReducer}  from "./auth";
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
@@ -7,6 +7,7 @@ const rootReducer = combineReducers({
     Currency: currencyReducer,
     Products: productReducer,
     editProduct: editProductReducer,
+    CartItem: addTocartReducer,
 });
 
 export default rootReducer;

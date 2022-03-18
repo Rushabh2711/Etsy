@@ -61,7 +61,7 @@ const ShopDetails = (props) => {
                 <Divider variant="middle" />
                 <h1>Shop Items</h1>
                 <ProductItem products={props.products} isUser={true} canEdit={canEdit} handleEditItemClick={handleAddItemClick}/>
-                <AddItemModal openAddItem={openAddItem} handleAddItemClose={handleAddItemClose}/>
+                <AddItemModal openAddItem={openAddItem} handleAddItemClose={handleAddItemClose} shopData={props.shopData}/>
             </Container>
         </div>
     );

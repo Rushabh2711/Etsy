@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -10,6 +10,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
+import { addProducts, getProducts, updateProduct } from '../services/ProductService';
+import { product } from '../actions';
 
 
 
@@ -27,13 +29,85 @@ const AddItemModal = (props) => {
       boxShadow: 24,
       p: 4,
     };
-    const productData = useSelector(state => state.editProduct);
-    console.log("FROM MODAL ITEM",productData);
+
+    const dispatch = useDispatch();
+    const editProductData = useSelector(state => state.editProduct);
+    // console.log(editProductData.product_id);
+    const products = useSelector(state => state.Products);
+    console.log("FROM MODAL ITEM",editProductData);
     // const [selectedImage, setSelectedImage] = useState(null);
-    const [Category, setCategory] = useState("");
+
+    const [productName, setProductName] = useState(editProductData.name);
+    const [description, setDescription] = useState(editProductData.description);
+    const [price, setPrice] = useState(editProductData.price);
+    const [quantity, setQuantity] = useState(editProductData.count);
+    const [Category, setCategory] = useState(editProductData.category);
+    const [sellCount, setSellCount] = useState(editProductData.sell_count);
+
+    const userId = useSelector(state => state.LoggedInUSer);
+
+    useEffect(() => {
+      setProductName(editProductData.name);
+      setDescription(editProductData.description);
+      setPrice(editProductData.price);
+      setQuantity(editProductData.count);
+      setCategory(editProductData.category);
+      setSellCount(editProductData.sell_count);
+    }, [editProductData])
+
     const handleChange = (event) => {
         setCategory(event.target.value);
-      };
+    };
+
+    const handleSubmitClick = async () => {
+      var data = {
+        shop_id: props.shopData.shop_id,
+        category: Category,
+        count: parseInt(quantity),
+        name: productName,
+        description: description,
+        image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+        sell_count: editProductData.sell_count ? editProductData.sell_count : 0,
+        price: parseInt(price)
+      }
+      try {
+        if(editProductData.product_id) {
+          // var data = {
+          //   shop_id: props.shopData.shop_id,
+          //   category: Category ? Category : editProductData.category,
+          //   count: editProductData.count ? editProductData.count : parseInt(quantity),
+          //   name: editProductData.name ? editProductData.name : productName,
+          //   description: editProductData.description ? editProductData.description : description,
+          //   image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+          //   sell_count: editProductData.sell_count ? editProductData.sell_count : 0,
+          //   price: editProductData.price ? editProductData.price : parseInt(price)
+          // }
+          await updateProduct({...data, product_id: editProductData.product_id})
+        }
+        else if(userId) {
+          // var data = {
+          //   shop_id: props.shopData.shop_id,
+          //   category: Category,
+          //   count: parseInt(quantity),
+          //   name: productName,
+          //   description: description,
+          //   image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+          //   sell_count: 0,
+          //   price: parseInt(price)
+          // }
+            await addProducts(data);
+            // var newData = await getProducts();
+            // props.handleAddItemClose();
+            // dispatch(product(newData));
+        }
+        var newData = await getProducts();
+        props.handleAddItemClose();
+        dispatch(product(newData));
+
+      } catch (error) {
+        
+      }
+    };
     // console.log(selectedImage);
   
     return (
@@ -53,6 +127,8 @@ const AddItemModal = (props) => {
                label="Product Name"
                error={false} 
                variant="outlined"
+               defaultValue={editProductData.name}
+               onChange={(e) => setProductName(e.target.value)}
                margin="dense" />
             </div>
             <FormControl sx={{ minWidth: 200 }}>
@@ -60,16 +136,17 @@ const AddItemModal = (props) => {
                 <Select
                     labelId="category-label"
                     id="category-select"
-                    value={Category}
+                    value={editProductData.category ? editProductData.category : Category}
                     label="Category"
                     onChange={handleChange}
                 >
                      <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
-                    <MenuItem value={"Clothing"}>Clothing</MenuItem>
-                    <MenuItem value={"Jewellery"}>Jewellery</MenuItem>
-                    <MenuItem value={"Entertainment"}>Entertainment</MenuItem>
+                    <MenuItem value={'Clothing'}>Clothing</MenuItem>
+                    <MenuItem value={'Jewellery'}>Jewellery</MenuItem>
+                    <MenuItem value={'Entertainment'}>Entertainment</MenuItem>
+                    <MenuItem value={'Home Decor'}>Home Decor</MenuItem>
                 </Select>
                 </FormControl>
             <div>
@@ -78,6 +155,8 @@ const AddItemModal = (props) => {
                label="description"
                error={false} 
                variant="outlined"
+               defaultValue={editProductData.description}
+               onChange={(e) => setDescription(e.target.value)}
                margin="dense"
                multiline />
             </div>
@@ -86,6 +165,8 @@ const AddItemModal = (props) => {
                label="Price"
                error={false} 
                variant="outlined"
+               defaultValue={editProductData.price}
+               onChange={(e) => setPrice(e.target.value)}
                type="number"
                margin="dense" />
             </div>
@@ -94,10 +175,12 @@ const AddItemModal = (props) => {
                label="Quantity"
                error={false} 
                variant="outlined"
+               defaultValue={editProductData.count}
+               onChange={(e) => setQuantity(e.target.value)}
                type="number"
                margin="dense" />
             </div>
-                <Button style={{backgroundColor: "#000000", color: "#ffffff"}} variant="outlined">Submit Item</Button>
+                <Button style={{backgroundColor: "#000000", color: "#ffffff"}} onClick={handleSubmitClick} variant="outlined">Submit Item</Button>
             </div>
             </Box>
         </Modal>

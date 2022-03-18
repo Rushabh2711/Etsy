@@ -73,8 +73,8 @@ const Home = (props) => {
     return( 
         <div>
         <Navbar/>
-            <Box mt={2}>
-                <h1 style={{"text-align": "center"}}>Welcome {User.username && User.username.toUpperCase()} !</h1>
+            <Box mt={2} textAlign='center'>
+                <h1>Welcome {User.username && User.username.toUpperCase()} !</h1>
             </Box>
             <ProductItem products={products}
             handleIconclick={props.handleIconclick} />

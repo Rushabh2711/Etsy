@@ -16,25 +16,20 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
+import {addToCart} from '../actions';
 
 const Item = (props) => {
-    // var product = {
-    //     "category_id": 3,
-    //     "count": 7,
-    //     "description": "description",
-    //     "image": "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-    //     "isFav": true,
-    //     "name": "product name 11",
-    //     "price": 20,
-    //     "product_id": 11,
-    //     'sell_count': 7,
-    //     'shop_id': 5
-    // }
-    const products = useSelector(state => state.Products);
-    const [product, setProduct] = useState();
+
     const navigate = useNavigate();
     const {itemId} = useParams();
-    console.log(itemId);
+    const dispatch = useDispatch();
+
+    const products = useSelector(state => state.Products);
+    const currency = useSelector(state => state.Currency);
+    const [product, setProduct] = useState();
+    const [quantity, setquantity] = useState(0);
+    const [isItemAvailable, setIsItemAvailable] = useState(true);
+    
 
     useEffect(() => {
         const item = products.find((p) => p.product_id === parseInt(itemId));
@@ -42,11 +37,28 @@ const Item = (props) => {
    },[]);
 
     const handleCartClick = () => {
-        navigate('/cart');
+        if(isItemAvailable) {
+            var data = {
+                product_id: product.product_id,
+                quantity
+            };
+            dispatch(addToCart(data));
+            navigate('/cart');
+        }
     }
 
     const handleShopClick = () => {
         navigate("/shop/" + product.shop_id);
+    }
+
+    const handleItemchnage = (e) => {
+        setquantity(e.target.value)
+        if(e.target.value > product.count) {
+            setIsItemAvailable(false);
+        }
+        else {
+            setIsItemAvailable(true);
+        }
     }
 
    return( 
@@ -71,7 +83,9 @@ const Item = (props) => {
                             </Grid>
                             <Grid xs={6}>
                                 <h1>{product.name}</h1>
+                                <p>{"Total " + product.sell_count + " sales"}</p>
                                 <h3>{product.description}</h3>
+                                <h3>{"Price: " + product.price + " " + currency}</h3>
                                 <h2><Link
                                     component="button"
                                     variant="body2"
@@ -82,9 +96,10 @@ const Item = (props) => {
                                 </Link></h2>
                                 <TextField id="quantity" 
                                 label="Quantity"
-                                error={false}
+                                error={!isItemAvailable}
                                 variant="outlined"
                                 type="number"
+                                onChange={(e) => handleItemchnage(e)}
                                 helperText={product.count + " items available"} />
                                 
                             </Grid>

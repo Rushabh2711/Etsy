@@ -87,6 +87,7 @@ export default function Navbar(props) {
   const [openLogin, setOpenLogin] = useState(false);
   const [openRegistration, setOpenRegistration] = useState(false);
   const LoggedInUSer = useSelector(state => state.LoggedInUSer)
+  const cartItems = useSelector(state => state.CartItem);
 
   const handleLoginClick = () => setOpenLogin(true);
   const handleLoginClose = () => setOpenLogin(false);
@@ -141,14 +142,13 @@ export default function Navbar(props) {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
           <IconButton size="large" color="default" onClick={handleFavoriteClick}> <FavoriteBorderIcon /></IconButton>
-            <IconButton size="large" aria-label="show 4 new mails" color="default">
-              <Badge badgeContent={4} color="error" onClick={handleCartClick}>
+            <IconButton size="large" color="default" onClick={handleCartClick}>
+              <Badge badgeContent={cartItems.length} color="error" >
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
             <IconButton
               size="large"
-              aria-label="show 17 new notifications"
               onClick={handleStoreClick}
               color="default">
               <Badge color="error">

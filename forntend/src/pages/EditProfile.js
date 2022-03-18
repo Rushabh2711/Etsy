@@ -8,8 +8,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { countryList } from '../country';
+import { useNavigate } from 'react-router-dom';
 
 const EditProfile = (props) => {
+
+    const navigate = useNavigate();
 
     const [birthDate, setBirthDate] = useState();
     const [country, setcountry] = useState("");
@@ -23,6 +26,10 @@ const EditProfile = (props) => {
 
     const handleEditClick = () => {
 
+    }
+
+    const handleMyPurchasesClick = () => {
+        navigate('/myorder');
     }
 
     return( 
@@ -39,8 +46,11 @@ const EditProfile = (props) => {
                             <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' 
                                 alt='Etsy' loading="lazy" width="120" height="120"/>
                         </Grid>
-                        <Grid xs={9}>
-                        <IconButton style={{backgroundColor: "#000000", color: "#ffffff"}}><EditIcon/></IconButton>
+                        <Grid xs={6}>
+                            <IconButton style={{backgroundColor: "#000000", color: "#ffffff"}}><EditIcon/></IconButton>
+                        </Grid>
+                        <Grid xs={3}>
+                        <Button style={{backgroundColor: "#000000", color: "#ffffff"}} onClick={handleMyPurchasesClick}>My Purchases</Button>
                         </Grid>
                     </Grid>
                 </Box>

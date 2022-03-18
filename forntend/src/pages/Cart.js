@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import ProductItem from '../components/ProductItem';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -11,6 +12,8 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
+import { createOrder, updateProduct, getProducts } from '../services/ProductService';
+import { clearCart, product } from '../actions';
 
 
 
@@ -22,27 +25,79 @@ const Img = styled('img')({
   });
 
 const Cart = (props) => {
-    const navigate = useNavigate();
 
-    const handleCheckOutClick = () => {
-        navigate('/myorder');
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const products = useSelector(state => state.Products);
+    const currency = useSelector(state => state.Currency);
+    const cartItem = useSelector(state => state.CartItem);
+    const LoggedInUSer = useSelector(state => state.LoggedInUSer);
+    
+
+    const [cartData, setCartData] = useState([]);
+
+    useEffect(() => {
+          var data = []; 
+          cartItem.forEach(c => {
+              products.forEach(p => {
+                  if(p.product_id === c.product_id) {
+                      data.push({
+                        ...p,
+                        quantity: c.quantity,
+                      })
+                  }
+              })
+          });
+          console.log(data);
+          setCartData(data);
+    },[products, cartItem]);
+
+    const handleCheckOutClick = async () => {
+      if(LoggedInUSer) {
+        const data = {
+          user_id: LoggedInUSer,
+          price: total,
+          date: new Date(),
+          products: cartData
+        }
+        try {
+          await createOrder(data);
+          cartData.forEach( async (o) => {
+            var p = {
+              ...o,
+              sell_count: parseInt(o.quantity),
+              count: (o.count - parseInt(o.quantity))
+            };
+            await updateProduct(p);
+          });
+          var newProduct = await getProducts();
+          dispatch(product(newProduct));
+          dispatch(clearCart([]));
+          navigate('/myorder');
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
-   return( 
+    var total = 0;
+    cartData.forEach((i) => {
+      total += parseInt(i.quantity)*i.price;
+    }); 
+   return(
+    
         <div>
             <Navbar/>
                 <Box mt={2}>
                     <h1 style={{"text-align": "center"}}>Cart Items</h1>
                 </Box>
-                <Divider />
-                <Items/>
-                <Items/>
-                <Items/>
-                <Items/>
-                <Items/>
-                <Items/>
-                <Divider />
+                {/* <Divider /> */}
+                {cartData.map((item, index) => (
+                  <Items item={item}/>
+                ))}
+                {/* <Divider /> */}
                 <Box mt={2}>
-                    <h1 style={{"text-align": "center"}}>Total Price</h1>
+                    <h1 style={{"text-align": "center"}}>{"Total Price: " + total}</h1>
                     <Box textAlign='center'>
                         <Button sx={{ m: 2 }} style={{backgroundColor: "#000000", color: "#ffffff"}} size="small" onClick={handleCheckOutClick}>proceed to checkout</Button>
                     </Box>
@@ -53,6 +108,9 @@ const Cart = (props) => {
 }
 
 const Items = (props) => {
+    const currency = useSelector(state => state.Currency);
+    const p = props.item;
+    
     return (
         <Paper
         sx={{
@@ -64,34 +122,34 @@ const Items = (props) => {
             theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         }}
       >
-        <Grid container spacing={5}>
+        <Grid container spacing={5} key={p.product_id}>
           <Grid item>
-            <ButtonBase sx={{ width: 128, height: 128 }}>
-              <Img alt="complex" src="https://images.unsplash.com/photo-1522770179533-24471fcdba45" />
+            <ButtonBase sx={{ width: 128, height: 100 }}>
+              <Img alt="complex" src={p.image} />
             </ButtonBase>
           </Grid>
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography gutterBottom variant="subtitle1" component="div">
-                  Standard license
+                  {p.name}
                 </Typography>
                 <Typography variant="body2" gutterBottom>
-                  Full resolution 1920x1080 • JPEG
+                  {"Quantity: " + p.quantity}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  ID: 1030114
+                  {"Item Price: " + currency + " " + p.price}
                 </Typography>
               </Grid>
-              <Grid item>
+              {/* <Grid item>
                 <Typography sx={{ cursor: 'pointer' }} variant="body2">
                   Remove
                 </Typography>
-              </Grid>
+              </Grid> */}
             </Grid>
             <Grid item>
               <Typography variant="subtitle1" component="div">
-                $19.00
+                {currency + " " + p.price*parseInt(p.quantity)}
               </Typography>
             </Grid>
           </Grid>

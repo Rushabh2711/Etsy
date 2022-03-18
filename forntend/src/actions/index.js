@@ -38,3 +38,23 @@ export const editProduct = (data) => {
         payload : data
     }
 };
+
+export const addToCart = (data) => {
+    return {
+        type: 'ADDTOCART',
+        payload : data
+    }
+};
+
+export const clearCart = () => {
+    return {
+        type: 'CLEARCART',
+    }
+};
+
+// export const ShopDetails = (data) => {
+//     return {
+//         type: 'SHOP',
+//         payload : data
+//     }
+// };
