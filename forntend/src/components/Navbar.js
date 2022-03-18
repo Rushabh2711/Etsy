@@ -25,7 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '@mui/material/Modal';
 import Login from '../pages/Login'
 import Registration from '../pages/Registration';
-import { logout } from '../actions';
+import { logout, userLogin } from '../actions';
 
 
 
@@ -93,6 +93,7 @@ export default function Navbar(props) {
 
   const handleLogoutClick = () => {
     dispatch(logout());
+    dispatch(userLogin([]));
   }
 
   const handleRegistrationClick = () => {

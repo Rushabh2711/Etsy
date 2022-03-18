@@ -17,27 +17,29 @@ import { useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 
-
-
-
-
-
-
-
 const Item = (props) => {
-    var product = {
-        "category_id": 3,
-        "count": 7,
-        "description": "description",
-        "image": "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-        "isFav": true,
-        "name": "product name 11",
-        "price": 20,
-        "product_id": 11,
-        'sell_count': 7,
-        'shop_id': 5
-    }
+    // var product = {
+    //     "category_id": 3,
+    //     "count": 7,
+    //     "description": "description",
+    //     "image": "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+    //     "isFav": true,
+    //     "name": "product name 11",
+    //     "price": 20,
+    //     "product_id": 11,
+    //     'sell_count': 7,
+    //     'shop_id': 5
+    // }
+    const products = useSelector(state => state.Products);
+    const [product, setProduct] = useState();
     const navigate = useNavigate();
+    const {itemId} = useParams();
+    console.log(itemId);
+
+    useEffect(() => {
+        const item = products.find((p) => p.product_id === parseInt(itemId));
+        setProduct(item);
+   },[]);
 
     const handleCartClick = () => {
         navigate('/cart');
@@ -50,7 +52,7 @@ const Item = (props) => {
    return( 
         <div>
             <Navbar/>
-                <Container maxWidth="lg">
+                {product && <Container maxWidth="lg">
                     <Box mt={2}>
                         <Grid container>
                             <Grid xs={5}>
@@ -61,6 +63,7 @@ const Item = (props) => {
                                 <IconButton
                                     sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
                                     aria-label={`info about ${product.title}`}
+                                    onClick={() => props.handleIconclick(product)}
                                 >
                                     {!product.isFav ? <FavoriteIcon sx={{ color: grey[700] }}/> :
                                     <FavoriteIcon sx={{ color: red[700] }}/>}
@@ -90,7 +93,7 @@ const Item = (props) => {
                     <Box textAlign='center'>
                         <Button sx={{ m: 2 }} style={{backgroundColor: "#000000", color: "#ffffff"}} onClick={handleCartClick}>Add To Cart</Button>
                     </Box>
-                </Container>
+                </Container>}
             <Footer/>
         </div>
     );

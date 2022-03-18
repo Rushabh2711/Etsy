@@ -16,6 +16,21 @@ class User {
         })
     }
 
+    static async findUserData(userid) {
+        const query = "SELECT * FROM user WHERE user_id = ?";
+        return new Promise((res, rej) => {
+            db.query(query, [userid] , async (err, result) => {
+                if(err) {
+                    rej(err);
+                }
+                if(result.length === 0) {
+                    rej("User not exist")
+                }
+                res(result[0]);
+            })
+        })
+    }
+
     static async registerUser(user) {
         const query = "INSERT INTO user(username, email, password) VALUES(?,?,?)";
         return new Promise((res, rej) => {
@@ -114,7 +129,7 @@ class User {
                 if(err) {
                     rej(err);
                 }
-                res(result);
+                res(result[0]);
             })
         })
     }

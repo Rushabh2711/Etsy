@@ -6,7 +6,7 @@ export const getProducts = async () => {
     return new Promise((res, rej) => {
       axios.post(STRINGS.url+'/products')
       .then(response => {
-          console.log(response.data);
+          // console.log(response.data);
           res(response.data)
       }).catch(c => {
         rej(c)
@@ -21,7 +21,7 @@ export const getFavorite = async (user_id) => {
   return new Promise((res, rej) => {
     axios.post(STRINGS.url+'/favorite',data)
     .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         res(response.data)
     }).catch(c => {
       rej(c)

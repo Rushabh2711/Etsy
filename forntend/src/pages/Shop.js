@@ -14,28 +14,31 @@ const Shop = (props) => {
     const products = useSelector(state => state.Products);
     const userId = useSelector(state => state.LoggedInUSer);
     const [shopProducts, setShopProducts] = useState([]);
+    const [ShopDetailsData, setShopDetailsData] = useState([]);
     const isShop = true;
     var {shopId} = useParams();
     shopId = parseInt(shopId)
-    
+    // var data;
     useEffect( async () => {
         try{
-            const data = shopId ? await getShopDetails(shopId) : null;
-            const UsershopDetails = userId ? await getUserShopDetails(userId) : null;
-            console.log(data);
-            const currShop = shopId ? shopId : UsershopDetails.shop_id
-            setShopProducts(products.filter((p) => p.shop_id === currShop));
+            // const data = shopId ? await getShopDetails(shopId) : null;
+            // const UsershopDetails = userId ? await getUserShopDetails(userId) : null;
+            const data = shopId ? await getShopDetails(shopId) : await getUserShopDetails(userId);
+            // console.log(products, "Products in shop");
+            // const currShop = shopId ? shopId : UsershopDetails.shop_id
+            setShopDetailsData(data)
+            setShopProducts(products.filter((p) => p.shop_id === data.shop_id));
         }
         catch(error){
-            console.log(error)
+            console.log(error);
         }
         
-    },[]);
+    },[products]);
 
    return( 
         <div>
             <Navbar/>
-            {!isShop ? <FirstShop/> : <ShopDetails products={shopProducts}/>}
+            {!ShopDetailsData ? <FirstShop/> : <ShopDetails products={shopProducts} shopData={ShopDetailsData}/>}
 
             <Footer/>
         </div>

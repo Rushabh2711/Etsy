@@ -8,7 +8,7 @@ export const getShopDetails = async (shop_id) => {
     return new Promise((res, rej) => {
       axios.post(STRINGS.url+'/getShopDetails',data)
       .then(response => {
-          console.log(response.data);
+          // console.log(response.data);
           res(response.data)
       }).catch(c => {
         rej(c)
@@ -23,8 +23,8 @@ export const getUserShopDetails = async (user_id) => {
     return new Promise((res, rej) => {
       axios.post(STRINGS.url+'/findShop',data)
       .then(response => {
-          console.log(response.data);
-          res(response.data[0])
+          // console.log(response.data);
+          res(response.data)
       }).catch(c => {
         rej(c)
       });

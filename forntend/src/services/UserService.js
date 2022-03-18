@@ -1,24 +1,18 @@
-var axios = require('axios');
+import axios from 'axios';
+import STRINGS from '../constant';
 
-
-var data = JSON.stringify({
-  "username": "Rushabh",
-  "password": "rushabh"
-});
-
-var config = {
-  method: 'post',
-  url: 'http://localhost:3001/login',
-  headers: { 
-    'Content-Type': 'application/json'
-  },
-  data : data
+export const getUserDetails = async (user_id) => {
+  var data = {
+    userid: user_id
+  }
+  return new Promise((res, rej) => {
+    axios.post(STRINGS.url+'/getUserData',data)
+    .then(response => {
+        console.log(response.data);
+        res(response.data)
+    }).catch(c => {
+      // console.log(c);
+      rej(c)
+    });
+  })
 };
-
-axios(config)
-.then(function (response) {
-  console.log(JSON.stringify(response.data));
-})
-.catch(function (error) {
-  console.log(error);
-});

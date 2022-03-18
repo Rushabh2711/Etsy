@@ -35,3 +35,12 @@ export const productReducer = (state = [], action) => {
             return state;
     }
 };
+
+export const editProductReducer = (state = {}, action) => {
+    switch (action.type){
+        case 'EDITPRODUCT':
+            return action.payload;
+        default: 
+            return state;
+    }
+};

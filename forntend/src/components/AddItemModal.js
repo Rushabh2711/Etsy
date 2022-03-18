@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -26,13 +27,14 @@ const AddItemModal = (props) => {
       boxShadow: 24,
       p: 4,
     };
- 
-    const [selectedImage, setSelectedImage] = useState(null);
+    const productData = useSelector(state => state.editProduct);
+    console.log("FROM MODAL ITEM",productData);
+    // const [selectedImage, setSelectedImage] = useState(null);
     const [Category, setCategory] = useState("");
     const handleChange = (event) => {
         setCategory(event.target.value);
       };
-    console.log(selectedImage);
+    // console.log(selectedImage);
   
     return (
       <div>
@@ -95,7 +97,7 @@ const AddItemModal = (props) => {
                type="number"
                margin="dense" />
             </div>
-                <Button style={{backgroundColor: "#000000", color: "#ffffff"}} variant="outlined">Add</Button>
+                <Button style={{backgroundColor: "#000000", color: "#ffffff"}} variant="outlined">Submit Item</Button>
             </div>
             </Box>
         </Modal>

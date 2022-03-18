@@ -1,4 +1,4 @@
-import {loggedReducer, userSignUpReducer, currencyReducer, productReducer}  from "./auth";
+import {loggedReducer, userSignUpReducer, currencyReducer, productReducer, editProductReducer}  from "./auth";
 import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
@@ -6,6 +6,7 @@ const rootReducer = combineReducers({
     User: userSignUpReducer,
     Currency: currencyReducer,
     Products: productReducer,
+    editProduct: editProductReducer,
 });
 
 export default rootReducer;

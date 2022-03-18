@@ -31,3 +31,10 @@ export const product = (data) => {
         payload : data
     }
 };
+
+export const editProduct = (data) => {
+    return {
+        type: 'EDITPRODUCT',
+        payload : data
+    }
+};

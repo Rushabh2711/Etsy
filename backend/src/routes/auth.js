@@ -15,6 +15,15 @@ router.post('/login', async (req, res) => {
     }
 });
 
+router.post('/getUserData', async (req, res) => {
+    try {
+        const user = await User.findUserData(req.body.userid);
+        res.status(200).send(user);
+    } catch (e) {
+        res.status(400).send(e);
+    }
+});
+
 router.post('/register', async (req, res) => {
     try {
         const user = await User.registerUser(req.body);
