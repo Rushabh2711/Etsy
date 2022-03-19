@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import InputLabel from '@mui/material/InputLabel';
+import { Checkbox } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
@@ -42,6 +43,7 @@ const AddItemModal = (props) => {
     const [price, setPrice] = useState(editProductData.price);
     const [quantity, setQuantity] = useState(editProductData.count);
     const [Category, setCategory] = useState(editProductData.category);
+    const [addNew, setAddNew] = useState(false);
     const [sellCount, setSellCount] = useState(editProductData.sell_count);
 
     const userId = useSelector(state => state.LoggedInUSer);
@@ -59,6 +61,15 @@ const AddItemModal = (props) => {
         setCategory(event.target.value);
     };
 
+    const handleCheckClick = (e) => {
+      if(e.target.checked) {
+        setAddNew(true);
+      }
+      else {
+        setAddNew(false);
+      }
+    }
+
     const handleSubmitClick = async () => {
       var data = {
         shop_id: props.shopData.shop_id,
@@ -68,7 +79,7 @@ const AddItemModal = (props) => {
         description: description,
         image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
         sell_count: editProductData.sell_count ? editProductData.sell_count : 0,
-        price: parseInt(price)
+        price: parseFloat(price)
       }
       try {
         if(editProductData.product_id) {
@@ -138,7 +149,7 @@ const AddItemModal = (props) => {
                onChange={(e) => setProductName(e.target.value)}
                margin="dense" />
             </div>
-            <FormControl sx={{ minWidth: 200 }}>
+            {!addNew ? <FormControl sx={{ minWidth: 200 }}>
             <InputLabel id="category">Category</InputLabel>
                 <Select
                     labelId="category-label"
@@ -156,7 +167,17 @@ const AddItemModal = (props) => {
                     <MenuItem value={'Home Decor'}>Home Decor</MenuItem>
                 </Select>
                 </FormControl>
+                : <div>
+                <TextField id="newcategory" 
+                   label="New Category"
+                   error={false} 
+                   variant="outlined"
+                   onChange={(e) => handleChange(e.target.value)}
+                   margin="dense" />
+                </div>
+                }
             <div>
+              <div><Checkbox sx={{ color:'black' }} label="new-category" onClick={(e) => handleCheckClick(e)}/>Add new Category</div>
             <div>
             <TextField id="description" 
                label="description"
@@ -174,7 +195,6 @@ const AddItemModal = (props) => {
                variant="outlined"
                defaultValue={editProductData.price}
                onChange={(e) => setPrice(e.target.value)}
-               type="number"
                margin="dense" />
             </div>
             <div>

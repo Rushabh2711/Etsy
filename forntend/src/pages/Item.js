@@ -95,13 +95,16 @@ const Item = (props) => {
                                 >
                                 Go to Shop
                                 </Link></h2>
-                                <TextField id="quantity" 
+                                {product.count ? <TextField id="quantity" 
                                 label="Quantity"
                                 error={!isItemAvailable}
                                 variant="outlined"
                                 type="number"
                                 onChange={(e) => handleItemchnage(e)}
                                 helperText={product.count + " items available"} />
+                            :
+                            <div style={{ "color" : "red"}}><h3>Out Of Stock</h3></div>
+                                }
                                 
                             </Grid>
                         </Grid>

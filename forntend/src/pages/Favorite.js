@@ -31,7 +31,7 @@ const Favorite = (props) => {
     return( 
         <div>
             <Navbar/>
-            <Container maxWidth="lg">
+            {User.username && <Container maxWidth="lg">
                 <Box mt={2}>
                     <Grid container>
                         <Grid xs={2}>
@@ -50,7 +50,7 @@ const Favorite = (props) => {
                 <Divider variant="middle" />
                 <h1>Favorite Items</h1>
                 <ProductItem products={favProducts}  handleIconclick={props.handleIconclick}/>
-            </Container>
+            </Container>}
             <Footer/>
         </div>
 

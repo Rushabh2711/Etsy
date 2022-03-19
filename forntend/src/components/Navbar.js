@@ -96,6 +96,7 @@ export default function Navbar(props) {
   const handleLogoutClick = () => {
     dispatch(logout());
     dispatch(userLogin({}));
+    navigate('/');
   }
 
   const handleRegistrationClick = () => {
