@@ -53,6 +53,9 @@ const Cart = (props) => {
           setCartData(data);
     },[products, cartItem]);
 
+
+
+
     const handleCheckOutClick = async () => {
       if(LoggedInUSer) {
         const data = {
@@ -71,8 +74,16 @@ const Cart = (props) => {
             };
             await updateProduct(p);
           });
-          var newProduct = await getProducts();
-          dispatch(product(newProduct));
+          
+        //   var newProduct = await getProducts();
+        //   newProduct.forEach(p => {
+        //     products.forEach(f => {
+        //         if(p.product_id === f.product_id && f.isFav) {
+        //             p.isFav = true;
+        //         }
+        //     })
+        // });
+        //   dispatch(product(newProduct));
           dispatch(clearCart([]));
           navigate('/myorder');
         } catch (error) {

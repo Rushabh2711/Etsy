@@ -16,3 +16,19 @@ export const getUserDetails = async (user_id) => {
     });
   })
 };
+
+export const updateUserDetails = async (data) => {
+  var update = {
+    user: data
+  }
+  return new Promise((res, rej) => {
+    axios.post(STRINGS.url+'/update',update)
+    .then(response => {
+        console.log(response.data);
+        res()
+    }).catch(c => {
+      // console.log(c);
+      rej(c)
+    });
+  })
+};

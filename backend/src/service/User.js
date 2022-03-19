@@ -52,11 +52,11 @@ class User {
     }
 
     static async updateUser(user) {
-        const query = "UPDATE user SET username = ?, password = ?, about = ?, dob = ?, address = ?, city = ?, country = ?, gender = ?, phoneno = ? WHERE user_id = ?";
+        const query = "UPDATE user SET username = ?, email = ?, about = ?, dob = ?, address = ?, city = ?, country = ?, gender = ?, phoneno = ? WHERE user_id = ?";
         return new Promise((res, rej) => {
             db.query(query,
                 [user.username,
-                user.password,
+                user.email,
                 user.about,
                 user.dob,
                 user.address,

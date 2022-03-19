@@ -5,15 +5,28 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
-import { getOrder } from '../services/ProductService';
+import { getOrder, getProducts } from '../services/ProductService';
+import { product } from '../actions';
 
 const MyOrder = (props) => {
 
+    const dispatch = useDispatch();
+
     const LoggedInUSer = useSelector(state => state.LoggedInUSer);
+    const products = useSelector(state => state.Products);
     const [myOrder, setmyOrder] = useState();
     var data = [];
     useEffect( async () => {
         data = await getOrder(LoggedInUSer);
+        var newProduct = await getProducts();
+        newProduct.forEach(p => {
+            products.forEach(f => {
+                if(p.product_id === f.product_id && f.isFav) {
+                    p.isFav = true;
+                }
+            })
+        });
+        dispatch(product(newProduct));
         console.log(data);
         setmyOrder(data);
     },[LoggedInUSer]);

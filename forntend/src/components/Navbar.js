@@ -25,7 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import Modal from '@mui/material/Modal';
 import Login from '../pages/Login'
 import Registration from '../pages/Registration';
-import { logout, userLogin } from '../actions';
+import { logout, userLogin, searchItem } from '../actions';
 
 
 
@@ -85,6 +85,7 @@ export default function Navbar(props) {
 
   var user = true;
   const [openLogin, setOpenLogin] = useState(false);
+  const searchText = useSelector(state => state.searchText);
   const [openRegistration, setOpenRegistration] = useState(false);
   const LoggedInUSer = useSelector(state => state.LoggedInUSer)
   const cartItems = useSelector(state => state.CartItem);
@@ -94,7 +95,7 @@ export default function Navbar(props) {
 
   const handleLogoutClick = () => {
     dispatch(logout());
-    dispatch(userLogin([]));
+    dispatch(userLogin({}));
   }
 
   const handleRegistrationClick = () => {
@@ -102,6 +103,12 @@ export default function Navbar(props) {
     setOpenLogin(false)};
     
   const handleRegistrationClose = () => setOpenRegistration(false);
+
+  const handleSearchChange = (e) => {
+    if(e.keyCode === 13) {
+      dispatch(searchItem(e.target.value));
+    } 
+  }
 
   const handleFavoriteClick = () => {
     navigate('/favorite');
@@ -135,7 +142,10 @@ export default function Navbar(props) {
           <Search>
             <SearchIconWrapper><SearchIcon /></SearchIconWrapper>
             <StyledInputBase
+              defaultValue={searchText}
               placeholder="Search for anything..."
+              style={{"border": "2px solid", "border-radius": "96px" }}
+              onKeyUp={handleSearchChange}
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>

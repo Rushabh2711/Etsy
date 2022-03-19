@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import ProductItem from '../components/ProductItem';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -9,13 +10,31 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { countryList } from '../country';
 import { useNavigate } from 'react-router-dom';
+import { updateUserDetails } from '../services/UserService';
+import { userLogin } from '../actions';
 
 const EditProfile = (props) => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const userData = useSelector(state => state.User);
+    const userId = useSelector(state => state.LoggedInUSer);
 
     const [birthDate, setBirthDate] = useState();
-    const [country, setcountry] = useState("");
+    const [country, setcountry] = useState("United States");
+    const [userName, setUserName] = useState();
+    const [gender, setGender] = useState();
+    const [phoneno, setPhoneno] = useState();
+    const [email, setEmail] = useState();
+    const [address, setAddress] = useState();
+    const [city, setCity] = useState();
+    const [about, setAbout] = useState();
+
+    // useEffect(() => {
+    //     setUserName(userData.username);
+    //     setEmail(userData.email)
+    // },[userData])
 
     const handleRadioChange = (e) => {
         console.log(e.target.value);
@@ -24,8 +43,29 @@ const EditProfile = (props) => {
         setcountry(event.target.value);
       };
 
-    const handleEditClick = () => {
-
+    const handleEditClick = async () => {
+        if(userId) {
+            var data = {
+                user_id: userId,
+                username: userName ? userName : userData.username,
+                email: email ? email : userData.email,
+                about,
+                dob: birthDate,
+                address, 
+                city, 
+                country, 
+                gender, 
+                phoneno
+            }
+            try {
+                await updateUserDetails(data);
+                dispatch(userLogin(data));
+                navigate('/')
+            } catch (error) {
+                
+            }
+            console.log(data);
+        }
     }
 
     const handleMyPurchasesClick = () => {
@@ -57,17 +97,18 @@ const EditProfile = (props) => {
                 <Box>
                 <TextField id="name" 
                     label="Your Name" 
+                    defaultValue={userData.username}
                     error={false} 
                     variant="outlined" 
                     margin="normal"
-                    onChange={(e) => (console.log(e))} />
+                    onChange={(e) => (setUserName(e.target.value))} />
                 <Divider />
                 <FormControl>
                     <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
                     <RadioGroup
                         row
                         aria-labelledby="demo-row-radio-buttons-group-label"
-                        onChange={(e) => handleRadioChange(e)}
+                        onChange={(e) => setGender(e.target.value)}
                         name="row-radio-buttons-group"
                     >
                         <FormControlLabel value="female" control={<Radio />} label="Female" />
@@ -80,29 +121,32 @@ const EditProfile = (props) => {
                     label="Phone Number"
                     error={false} 
                     variant="outlined"
+                    onChange={(e) => setPhoneno(e.target.value)}
                     type="number"
                     margin="dense" />
                     <Divider/>
                 <TextField id="email" 
                     label="Email" 
+                    defaultValue={userData.email}
                     error={false} 
                     variant="outlined" 
                     margin="normal"
-                    onChange={(e) => (console.log(e))} />
+                    onChange={(e) => setEmail(e.target.value)} />
                      <Divider/>
                 <TextField id="address" 
                     label="Address"
                     error={false} 
                     variant="outlined"
+                    onChange={(e) => setAddress(e.target.value)}
                     margin="normal"
                     multiline />
                 <Divider/>
                 <TextField id="city" 
                     label="City" 
-                    error={false} 
+                    error={false}
                     variant="outlined" 
                     margin="normal"
-                    onChange={(e) => (console.log(e))} />
+                    onChange={(e) => setCity(e.target.value)} />
                 <Divider/>
                 <div>
                     <FormControl sx={{ mt: 1, minWidth: 200 }}>
@@ -111,7 +155,7 @@ const EditProfile = (props) => {
                         labelId="demo-simple-select-autowidth-label"
                         id="demo-simple-select-autowidth"
                         value={country}
-                        onChange={handleCountyChange}
+                        onChange={(e) => setcountry(e.target.value)}
                         autoWidth
                         label="Country"
                         >
@@ -135,8 +179,9 @@ const EditProfile = (props) => {
                         label="Birth Date"
                         value={birthDate}
                         
-                        onChange={(birthDate) => {
-                        setBirthDate(birthDate);
+                        onChange={(e) => {
+                        setBirthDate(e);
+                        console.log(e);
                         }}
                         renderInput={(params) => <TextField {...params} />}
                     />
@@ -146,6 +191,7 @@ const EditProfile = (props) => {
                 label="About"
                 error={false} 
                 variant="outlined"
+                onChange={(e) => setAbout(e.target.value)}
                 margin="normal"
                 multiline />
                 <Divider/>

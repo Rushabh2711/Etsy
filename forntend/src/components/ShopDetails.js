@@ -25,16 +25,20 @@ const ShopDetails = (props) => {
         setopenAddItem(false);
         dispatch(editProduct({}));
     }
+    var totalSale = 0;
+    props.products.forEach(p => {
+        totalSale+=p.sell_count;
+    });
     useEffect( async () => {
         try{
             const data = await getUserDetails(props.shopData.user_id);
             setshopOwner(data);
             // console.log("API DATA", data);
+            
         }
         catch(error){
             console.log(error);
-        }
-        
+        }  
     },[props.shopData]);
     // console.log("qener details:", shopOwner);
    return( 
@@ -60,6 +64,7 @@ const ShopDetails = (props) => {
                 </Box>
                 <Divider variant="middle" />
                 <h1>Shop Items</h1>
+                {canEdit && <h3>Total Sales : {totalSale}</h3>}
                 <ProductItem products={props.products} isUser={true} canEdit={canEdit} handleEditItemClick={handleAddItemClick}/>
                 <AddItemModal openAddItem={openAddItem} handleAddItemClose={handleAddItemClose} shopData={props.shopData}/>
             </Container>

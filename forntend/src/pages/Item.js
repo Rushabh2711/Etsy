@@ -85,6 +85,7 @@ const Item = (props) => {
                                 <h1>{product.name}</h1>
                                 <p>{"Total " + product.sell_count + " sales"}</p>
                                 <h3>{product.description}</h3>
+                                <h3>{"Category: " + product.category}</h3>
                                 <h3>{"Price: " + product.price + " " + currency}</h3>
                                 <h2><Link
                                     component="button"

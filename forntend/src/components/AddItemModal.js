@@ -101,8 +101,15 @@ const AddItemModal = (props) => {
             // dispatch(product(newData));
         }
         var newData = await getProducts();
+        newData.forEach(p => {
+            products.forEach(f => {
+                if(p.product_id === f.product_id && f.isFav) {
+                    p.isFav = true;
+                }
+            })
+        });
         props.handleAddItemClose();
-        dispatch(product(newData));
+        dispatch(product([...newData]));
 
       } catch (error) {
         

@@ -52,6 +52,13 @@ export const clearCart = () => {
     }
 };
 
+export const searchItem = (data) => {
+    return {
+        type: 'SEARCH',
+        payload : data
+    }
+};
+
 // export const ShopDetails = (data) => {
 //     return {
 //         type: 'SHOP',
