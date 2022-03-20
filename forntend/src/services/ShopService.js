@@ -46,7 +46,8 @@ export const checkShopAvailability = async (shopName) => {
 export const addShopDetails = async (shopName, userid) => {
   var data = {
     userid,
-    name: shopName
+    name: shopName,
+    image: "https://t3.ftcdn.net/jpg/00/84/43/86/360_F_84438633_CnVRXjN4oABKvgN8F9IJIOrIMdIyun9x.jpg",
   }
   return new Promise((res, rej) => {
     axios.post(STRINGS.url+'/addShopDetails',data)
@@ -58,5 +59,22 @@ export const addShopDetails = async (shopName, userid) => {
     });
   })
 };
+
+export const updateShopDetails = async (url, shop_id) => {
+  var data = {
+    image: url,
+    shop_id
+  }
+  return new Promise((res, rej) => {
+    axios.post(STRINGS.url+'/upadteShopDetails',data)
+    .then(response => {
+        res(response.data)
+    }).catch(c => {
+      rej(c)
+    });
+  })
+};
+
+
 
 

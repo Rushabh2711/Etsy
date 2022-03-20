@@ -52,11 +52,12 @@ class User {
     }
 
     static async updateUser(user) {
-        const query = "UPDATE user SET username = ?, email = ?, about = ?, dob = ?, address = ?, city = ?, country = ?, gender = ?, phoneno = ? WHERE user_id = ?";
+        const query = "UPDATE user SET username = ?, email = ?, image = ?, about = ?, dob = ?, address = ?, city = ?, country = ?, gender = ?, phoneno = ? WHERE user_id = ?";
         return new Promise((res, rej) => {
             db.query(query,
                 [user.username,
                 user.email,
+                user.image,
                 user.about,
                 user.dob,
                 user.address,
@@ -175,29 +176,25 @@ class User {
         })
     }
 
-    //  --------------- need to change ---------------------
-    // static async upadteShopDetails(user) {   
-    //     const query = "UPDATE shop SET username = ?, password = ?, about = ?, dob = ?, address = ?, city = ?, country = ?, gender = ?, phoneno = ? WHERE user_id = ?";
-    //     return new Promise((res, rej) => {
-    //         db.query(query,
-    //             [user.username,
-    //             user.password,
-    //             user.about,
-    //             user.dob,
-    //             user.address,
-    //             user.city,
-    //             user.country,
-    //             user.gender,
-    //             user.phoneno,
-    //             user.user_id] ,
-    //             async (err, result) => {
-    //             if(err) {
-    //                 rej(err);
-    //             }
-    //             res(result[0]);
-    //         })
-    //     })
-    // }
+    static async upadteShopDetails(shop) {   
+        const query = "UPDATE shop SET image = ? WHERE shop_id = ?";
+        return new Promise((res, rej) => {
+            db.query(query,
+                [shop.image,
+                shop.shop_id] ,
+                async (err, result) => {
+                if(err) {
+                    rej(err);
+                }
+                try {
+                    const shopDetails = await this.getShopDetails(shop.shop_id);
+                    res(shopDetails)
+                } catch (error) {
+                    rej(error)
+                }
+            })
+        })
+    }
 
 }
 

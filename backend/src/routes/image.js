@@ -1,4 +1,5 @@
 var aws = require("aws-sdk");
+const multer = require("multer");
 const multerS3 = require("multer-s3");
 // const config = require('../Config');
 
@@ -18,7 +19,7 @@ const s3 = new aws.S3({
 
 // Uploading files to the bucket
 
-function uploadImage(key, body, contentType) {
+function uploadImage(key, body, contentType, res) {
   // Setting up S3 upload parameters
   let params = {
     Bucket: bucketName,
@@ -29,10 +30,10 @@ function uploadImage(key, body, contentType) {
 
   s3.upload(params, function (err, data) {
     if (err) {
-      throw err;
+      res.status(400).send();
     }
     console.log(`File uploaded successfully. ${data.Location}`);
-    
+    res.status(200).send(data.Location);
   });
 }
 

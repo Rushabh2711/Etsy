@@ -44,6 +44,7 @@ const AddItemModal = (props) => {
     const [description, setDescription] = useState(editProductData.description);
     const [price, setPrice] = useState(editProductData.price);
     const [quantity, setQuantity] = useState(editProductData.count);
+    const [image, setimage] = useState(editProductData.image);
     const [Category, setCategory] = useState(editProductData.category);
     const [addNew, setAddNew] = useState(false);
     const [sellCount, setSellCount] = useState(editProductData.sell_count);
@@ -55,6 +56,7 @@ const AddItemModal = (props) => {
       setDescription(editProductData.description);
       setPrice(editProductData.price);
       setQuantity(editProductData.count);
+      setimage(editProductData.image)
       setCategory(editProductData.category);
       setSellCount(editProductData.sell_count);
     }, [editProductData])
@@ -72,6 +74,13 @@ const AddItemModal = (props) => {
       }
     }
 
+    const handleImageuplod = async (e) => {
+      console.log("info",e); 
+      const url = await insertImage(e.target.files[0],props.shopData.shop_id+props.shopData.name+Math.random());
+      setimage(url);
+      console.log(url);
+    }
+
     const handleSubmitClick = async () => {
       var data = {
         shop_id: props.shopData.shop_id,
@@ -79,7 +88,7 @@ const AddItemModal = (props) => {
         count: parseInt(quantity),
         name: productName,
         description: description,
-        image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+        image: image,
         sell_count: editProductData.sell_count ? editProductData.sell_count : 0,
         price: parseFloat(price)
       }
@@ -141,18 +150,18 @@ const AddItemModal = (props) => {
             <Box mt={2}>
                     <Grid container>
                         <Grid xs={6}>
-                            <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' 
-                                alt='Etsy' loading="lazy" width="120" height="120"/>
+                            <img src={image}
+                                alt='' loading="lazy" width="120" height="120"/>
                         </Grid>
                         <Grid xs={6}>
-                          <label htmlFor="upload-photo">
+                          <label htmlFor="upload-photo-modal">
                               <input
                                   accept="image/*"
                                   style={{ display: 'none' }}
-                                  id="upload-photo"
-                                  name="upload-photo"
+                                  id="upload-photo-modal"
+                                  name="upload-photo-modal"
                                   type="file"
-                                  onChange={(info)=>{console.log("info",info); insertImage(info.target.files[0])}}
+                                  onChange={(e) => handleImageuplod(e)}
                               />
                                <AddPhotoAlternateIcon/>
                             </label>

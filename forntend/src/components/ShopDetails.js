@@ -8,6 +8,7 @@ import ProductItem from './ProductItem';
 import Button from '@mui/material/Button';
 import AddItemModal from './AddItemModal';
 import { getUserDetails, insertImage } from '../services/UserService';
+import {updateShopDetails} from '../services/ShopService';
 import { editProduct } from '../actions';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 
@@ -22,6 +23,7 @@ const ShopDetails = (props) => {
     const user = useSelector(state => state.User);
     const canEdit = userId === props.shopData.user_id;
     const [openAddItem, setopenAddItem] = useState(false);
+    const [shopImage, setshopImage] = useState();
     const [shopOwner, setshopOwner] = useState({});
     const handleAddItemClick = () => setopenAddItem(true);
     const handleAddItemClose = () => {
@@ -43,6 +45,14 @@ const ShopDetails = (props) => {
             console.log(error);
         }  
     },[props.shopData]);
+
+    const handleImageuplod = async (e) => {
+        console.log("info",e); 
+        const url = await insertImage(e.target.files[0],props.shopData.shop_id);
+        const newData = await updateShopDetails(url,props.shopData.shop_id);
+        setshopImage(url);
+      }
+
     // console.log("qener details:", shopOwner);
    return( 
         <div>
@@ -50,7 +60,7 @@ const ShopDetails = (props) => {
                 <Box mt={2}>
                     <Grid container>
                         <Grid xs={3}>
-                            <img src='https://t3.ftcdn.net/jpg/00/84/43/86/360_F_84438633_CnVRXjN4oABKvgN8F9IJIOrIMdIyun9x.jpg' 
+                            <img src={shopImage ? shopImage : props.shopData.image} 
                                 alt='Etsy' loading="lazy" width="220" height="220"/>
                                 {canEdit && <label htmlFor="upload-photo">
                                 <input
@@ -59,7 +69,7 @@ const ShopDetails = (props) => {
                                     id="upload-photo"
                                     name="upload-photo"
                                     type="file"
-                                    onChange={async (info)=>{console.log("info",info); await insertImage(info.target.files[0])}}
+                                    onChange={(e) => handleImageuplod(e)}
                                 />
                                <AddPhotoAlternateIcon/>
                             </label>}

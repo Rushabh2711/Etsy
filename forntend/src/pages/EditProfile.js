@@ -28,6 +28,7 @@ const EditProfile = (props) => {
     const [phoneno, setPhoneno] = useState();
     const [email, setEmail] = useState();
     const [address, setAddress] = useState();
+    const [image, setImage] = useState(userData.image);
     const [city, setCity] = useState();
     const [about, setAbout] = useState();
 
@@ -53,7 +54,8 @@ const EditProfile = (props) => {
                 dob: birthDate,
                 address, 
                 city, 
-                country, 
+                country,
+                image, 
                 gender, 
                 phoneno
             }
@@ -83,11 +85,25 @@ const EditProfile = (props) => {
                 <Box mt={2}>
                     <Grid container>
                         <Grid xs={3}>
-                            <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' 
+                            <img src={image ? image : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
                                 alt='Etsy' loading="lazy" width="120" height="120"/>
                         </Grid>
                         <Grid xs={6}>
-                            <IconButton style={{backgroundColor: "#000000", color: "#ffffff"}}><AddPhotoAlternateIcon/></IconButton>
+                            <label htmlFor="upload-photo">
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="upload-photo"
+                                    name="upload-photo"
+                                    type="file"
+                                    onChange={async (info)=>{
+                                        console.log("info",info); 
+                                        // await insertImage(info.target.files[0]);
+                                        setImage("https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dXNlcnxlbnwwfHwwfHw%3D&w=1000&q=80");
+                                    }}
+                                />
+                               <AddPhotoAlternateIcon/>
+                            </label>
                         </Grid>
                         <Grid xs={3}>
                         <Button style={{backgroundColor: "#000000", color: "#ffffff"}} onClick={handleMyPurchasesClick}>My Purchases</Button>

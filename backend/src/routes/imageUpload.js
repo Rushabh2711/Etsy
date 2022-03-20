@@ -7,7 +7,7 @@ const multer = require("multer");
 const uploadItemImageMulter = multer({
     storage: multer.memoryStorage(),
     fileFilter: (req, file, cb) => {
-        console.log(req);
+        console.log(req.file);
       if (
         file.mimetype === "image/jpeg" ||
         file.mimetype === "image/JPEG" ||
@@ -25,11 +25,13 @@ const uploadItemImageMulter = multer({
   });
 
 
-router.post("/imageUpload", async (req,res,next)=>{
-    // uploadItemImageMulter.single("image"),
-    console.log("request",req);
-    uploadImage("1.png",req.file.buffer,req.file.mimetype);
-    //res.send({imageUrl:req.file.location});
+router.post("/imageUpload/:id",uploadItemImageMulter.single("image"), async (req,res,next)=>{
+    try {
+        uploadImage(req.params.id + ".png",req.file.buffer,req.file.mimetype,res);
+    } catch (error) {
+        
+    }
+    
 });
 
 module.exports = router;
