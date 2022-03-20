@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { Container, TextField, Divider, Box, FormControl, Button, Radio, IconButton, Grid, FormControlLabel, FormLabel, RadioGroup, InputLabel, Select, MenuItem } from '@mui/material';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import EditIcon from '@mui/icons-material/Edit';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { countryList } from '../country';
@@ -87,7 +87,7 @@ const EditProfile = (props) => {
                                 alt='Etsy' loading="lazy" width="120" height="120"/>
                         </Grid>
                         <Grid xs={6}>
-                            <IconButton style={{backgroundColor: "#000000", color: "#ffffff"}}><EditIcon/></IconButton>
+                            <IconButton style={{backgroundColor: "#000000", color: "#ffffff"}}><AddPhotoAlternateIcon/></IconButton>
                         </Grid>
                         <Grid xs={3}>
                         <Button style={{backgroundColor: "#000000", color: "#ffffff"}} onClick={handleMyPurchasesClick}>My Purchases</Button>
@@ -103,22 +103,10 @@ const EditProfile = (props) => {
                     margin="normal"
                     onChange={(e) => (setUserName(e.target.value))} />
                 <Divider />
-                <FormControl>
-                    <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
-                    <RadioGroup
-                        row
-                        aria-labelledby="demo-row-radio-buttons-group-label"
-                        onChange={(e) => setGender(e.target.value)}
-                        name="row-radio-buttons-group"
-                    >
-                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                        <FormControlLabel value="other" control={<Radio />} label="Other" />
-                    </RadioGroup>
-                </FormControl>
-                <Divider />
+                
                 <TextField id="phoneno" 
                     label="Phone Number"
+                    defaultValue={userData.phoneno}
                     error={false} 
                     variant="outlined"
                     onChange={(e) => setPhoneno(e.target.value)}
@@ -135,6 +123,7 @@ const EditProfile = (props) => {
                      <Divider/>
                 <TextField id="address" 
                     label="Address"
+                    defaultValue={userData.address}
                     error={false} 
                     variant="outlined"
                     onChange={(e) => setAddress(e.target.value)}
@@ -143,6 +132,7 @@ const EditProfile = (props) => {
                 <Divider/>
                 <TextField id="city" 
                     label="City" 
+                    defaultValue={userData.city}
                     error={false}
                     variant="outlined" 
                     margin="normal"
@@ -155,6 +145,7 @@ const EditProfile = (props) => {
                         labelId="demo-simple-select-autowidth-label"
                         id="demo-simple-select-autowidth"
                         value={country}
+                        defaultValue={userData.country}
                         onChange={(e) => setcountry(e.target.value)}
                         autoWidth
                         label="Country"
@@ -174,6 +165,21 @@ const EditProfile = (props) => {
                     </FormControl>
                 </div>
                 <Divider sx={{ mb: 2}}/>
+                <FormControl >
+                    <FormLabel id="demo-row-radio-buttons-group-label">Gender</FormLabel>
+                    <RadioGroup
+                        row
+                        defaultValue={userData.gender}
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        onChange={(e) => setGender(e.target.value)}
+                        name="row-radio-buttons-group"
+                    >
+                        <FormControlLabel value="female" control={<Radio />} label="Female" />
+                        <FormControlLabel value="male" control={<Radio />} label="Male" />
+                        <FormControlLabel value="other" control={<Radio />} label="Other" />
+                    </RadioGroup>
+                </FormControl>
+                <Divider />
                 <LocalizationProvider dateAdapter={AdapterDateFns} >
                     <DatePicker 
                         label="Birth Date"

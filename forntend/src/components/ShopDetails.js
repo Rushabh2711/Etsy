@@ -2,13 +2,16 @@ import React, {useState, useEffect} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { Grid } from '@mui/material';
+import { Grid, IconButton, Input } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import ProductItem from './ProductItem';
 import Button from '@mui/material/Button';
 import AddItemModal from './AddItemModal';
-import { getUserDetails } from '../services/UserService';
+import { getUserDetails, insertImage } from '../services/UserService';
 import { editProduct } from '../actions';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+
+
 
 
 
@@ -46,16 +49,39 @@ const ShopDetails = (props) => {
             <Container maxWidth="lg">
                 <Box mt={2}>
                     <Grid container>
-                        <Grid xs={4}>
+                        <Grid xs={3}>
                             <img src='https://t3.ftcdn.net/jpg/00/84/43/86/360_F_84438633_CnVRXjN4oABKvgN8F9IJIOrIMdIyun9x.jpg' 
                                 alt='Etsy' loading="lazy" width="220" height="220"/>
+                                {canEdit && <label htmlFor="upload-photo">
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="upload-photo"
+                                    name="upload-photo"
+                                    type="file"
+                                    onChange={async (info)=>{console.log("info",info); await insertImage(info.target.files[0])}}
+                                />
+                               <AddPhotoAlternateIcon/>
+                            </label>}
                         </Grid>
+                        {canEdit && <Grid xs={1}>
+                            {/* <label htmlFor="upload-photo">
+                                <input
+                                    accept="image/*"
+                                    style={{ display: 'none' }}
+                                    id="upload-photo"
+                                    name="upload-photo"
+                                    type="file"
+                                />
+                               <AddPhotoAlternateIcon/>
+                            </label> */}
+                        </Grid>}
                         <Grid xs={7}>
                             <h1>{props.shopData.name && props.shopData.name.toUpperCase()}</h1>
                             <h4>Owner Name : {shopOwner.username}</h4>
                             <h4>Contact : {shopOwner.phoneno}</h4>
                             <h4>Email : {shopOwner.email}</h4>
-                            <h5>About : {shopOwner.about}</h5>
+                            {/* <h5>About : {shopOwner.about}</h5> */}
                         </Grid>
                         {canEdit && <Grid xs={1}>
                         <Button variant="outlined" style={{backgroundColor: "#000000", color: "#ffffff"}} size="small" onClick={handleAddItemClick}>Add Item</Button>

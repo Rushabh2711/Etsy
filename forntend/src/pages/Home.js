@@ -34,7 +34,7 @@ const Home = (props) => {
     else {
         setHomeProduct(products);
     }
-   }, [LoggedInUSer]);
+   }, [LoggedInUSer, products]);
 
     
 

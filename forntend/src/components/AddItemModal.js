@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
+import {Button, Grid, IconButton} from '@mui/material';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
@@ -13,6 +14,7 @@ import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import { addProducts, getProducts, updateProduct } from '../services/ProductService';
 import { product } from '../actions';
+import { insertImage } from '../services/UserService';
 
 
 
@@ -136,6 +138,27 @@ const AddItemModal = (props) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description">
             <Box sx={style} component="form">
+            <Box mt={2}>
+                    <Grid container>
+                        <Grid xs={6}>
+                            <img src='https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' 
+                                alt='Etsy' loading="lazy" width="120" height="120"/>
+                        </Grid>
+                        <Grid xs={6}>
+                          <label htmlFor="upload-photo">
+                              <input
+                                  accept="image/*"
+                                  style={{ display: 'none' }}
+                                  id="upload-photo"
+                                  name="upload-photo"
+                                  type="file"
+                                  onChange={(info)=>{console.log("info",info); insertImage(info.target.files[0])}}
+                              />
+                               <AddPhotoAlternateIcon/>
+                            </label>
+                        </Grid>
+                    </Grid>
+                </Box>
             {/* <Button variant="contained" component="label">Upload File
                 <input type="file" hidden onChange={e => setSelectedImage(e.target.files[0])}/> 
             </Button>
@@ -172,7 +195,7 @@ const AddItemModal = (props) => {
                    label="New Category"
                    error={false} 
                    variant="outlined"
-                   onChange={(e) => handleChange(e.target.value)}
+                   onChange={(e) => handleChange(e)}
                    margin="dense" />
                 </div>
                 }

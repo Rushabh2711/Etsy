@@ -32,3 +32,15 @@ export const updateUserDetails = async (data) => {
     });
   })
 };
+
+export const insertImage = async (imageFile) => {
+  const imageFormData = new FormData();
+  imageFormData.append("image", imageFile);
+  console.log("image data",imageFile);
+  const response = await axios.post(STRINGS.url + '/imageUpload', imageFormData, {
+    headers: { "content-type": "" },
+  });
+  // const callParams = getFileUploadCallParams(formData);
+  // const response = await makeCall(URLS.insertImage, callParams);
+  return response;
+};

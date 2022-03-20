@@ -3,6 +3,7 @@ const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const orderRouter = require("./routes/order");
 const productRouter = require("./routes/product");
+const imageUpload = require("./routes/imageUpload");
 const cors = require('cors');
 
 
@@ -23,6 +24,7 @@ app.use(authRouter);
 app.use(userRouter);
 app.use(orderRouter);
 app.use(productRouter);
+app.use(imageUpload);
 
 function configureCors() {
     const whitelist = [

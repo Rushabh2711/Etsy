@@ -47,6 +47,7 @@ export default function ProductItem(props) {
   }
 
   const handleImageClick = (e) => {
+    dispatch(searchItem(""))
     navigate( "/item/" + e.product_id);
   }
 
@@ -107,12 +108,9 @@ export default function ProductItem(props) {
           <div><Checkbox sx={{ color:'black' }} label="exclude out of stock" />Exclude out of stock</div>
         </Grid>
     </Grid>}
-    <ImageList>
-      <ImageListItem key="Subheader" cols={5}>
-        <ListSubheader component="div"></ListSubheader>
-      </ImageListItem>
+    <ImageList cols={5}>
       {products.map((item, index) => (
-        <ImageListItem key={item.product_id}>
+        <ImageListItem key={item.product_id}  >
           <img
             src={`${item.image}?w=248&fit=crop&auto=format`}
             srcSet={`${item.image}?w=248&fit=crop&auto=format&dpr=2 2x`}
@@ -120,6 +118,7 @@ export default function ProductItem(props) {
             loading="lazy"
             onClick={() => handleImageClick(item)}
             width='100'
+            style={{"width":"100", "height":"100"}}
             height='100'
           />
           <ImageListItemBar

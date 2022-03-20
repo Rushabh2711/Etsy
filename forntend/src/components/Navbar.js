@@ -96,7 +96,7 @@ export default function Navbar(props) {
   const handleLogoutClick = () => {
     dispatch(logout());
     dispatch(userLogin({}));
-    navigate('/');
+    // navigate('/');
   }
 
   const handleRegistrationClick = () => {
@@ -129,6 +129,7 @@ export default function Navbar(props) {
 
   const handleLogoClick = () => {
     navigate('/');
+    window.location.reload(false);
   }
 
 

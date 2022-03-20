@@ -93,7 +93,7 @@ const Cart = (props) => {
     }
     var total = 0;
     cartData.forEach((i) => {
-      total += parseInt(i.quantity)*i.price;
+      total += Math.round((parseInt(i.quantity)*i.price)*100)/100;
     }); 
    return(
     
@@ -160,7 +160,7 @@ const Items = (props) => {
             </Grid>
             <Grid item>
               <Typography variant="subtitle1" component="div">
-                {currency + " " + p.price*parseInt(p.quantity)}
+                {currency + " " + Math.round((p.price*parseInt(p.quantity))*100)/100}
               </Typography>
             </Grid>
           </Grid>
