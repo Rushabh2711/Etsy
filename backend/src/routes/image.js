@@ -5,9 +5,8 @@ const multerS3 = require("multer-s3");
 
 const bucketName = "etsy-bucket7";
 
-awsAccessKey = "AKIAZQF5VJMLNVW7C7UW";
-awsSecretKey = "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";
-
+awsAccessKey = "AKIAZQF5VJMLAMCD26BC";
+awsSecretKey = "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";
 // config.awsSecretKey;
 aws.config.update({
   accessKeyId: awsAccessKey,
