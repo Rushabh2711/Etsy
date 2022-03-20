@@ -59,6 +59,7 @@ const MyOrder = (props) => {
                             <div>
                                 <h1 style={{"text-align": "center"}}>Order: {order.order_id}</h1>
                                 <h4 style={{"text-align": "center"}}>Total Price: {order.price}</h4>
+                                <h4 style={{"text-align": "center"}}>{new Date(order.date).toDateString()}</h4>
                                 <Orders productData={order.products}/>
                                 <Divider />
                             </div>
