@@ -4,7 +4,6 @@ const multerS3 = require("multer-s3");
 // const config = require('../Config');
 
 const bucketName = "etsy-bucket7";
-const region = "us-east-2";
 
 awsAccessKey = "AKIAZQF5VJMLNVW7C7UW";
 awsSecretKey = "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";
@@ -12,7 +11,6 @@ awsSecretKey = "vH+bOmuzCw/2fuinJUac/nz3Rd1Dt63hShIj6z86";
 // config.awsSecretKey;
 
 const s3 = new aws.S3({
-  region,
   awsAccessKey,
   awsSecretKey,
 });
