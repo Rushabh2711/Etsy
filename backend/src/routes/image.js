@@ -9,11 +9,12 @@ awsAccessKey = "AKIAZQF5VJMLNVW7C7UW";
 awsSecretKey = "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";
 
 // config.awsSecretKey;
-
-const s3 = new aws.S3({
-  awsAccessKey,
-  awsSecretKey,
+aws.config.update({
+  accessKeyId: awsAccessKey,
+  secretAccessKey: awsSecretKey,
 });
+
+const s3 = new aws.S3();
 
 // Uploading files to the bucket
 
