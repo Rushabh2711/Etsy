@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 
 var corsOptions = {
-    'origin': "http://localhost:3000",
+    'origin': "http://3.144.44.39:3000",
     'Access-Control-Allow-Origin': '*',
     'credentials': 'true'
   };
