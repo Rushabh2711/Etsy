@@ -32,14 +32,15 @@ const Item = (props) => {
     
 
     useEffect(() => {
-        const item = products.find((p) => p.product_id === parseInt(itemId));
+        const item = products.find((p) => p._id === itemId);
+        console.log(products);
         setProduct(item);
    },[]);
 
     const handleCartClick = () => {
         if(isItemAvailable) {
             var data = {
-                product_id: product.product_id,
+                _id: product._id,
                 quantity
             };
             dispatch(addToCart(data));

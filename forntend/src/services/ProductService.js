@@ -64,7 +64,7 @@ export const getFavorite = async (user_id) => {
 export const removeFavorite = async (product, userid) => {
   var data = {
     user_id: userid,
-    product_id: product.product_id
+    product_id: product._id
   };
   return new Promise((res, rej) => {
     axios.post(STRINGS.url+'/removeFavorite',data)
@@ -79,7 +79,7 @@ export const removeFavorite = async (product, userid) => {
 export const addFavotite = async (product, userid) => {
   var data = {
     user_id: userid,
-    product_id: product.product_id
+    product_id: product._id
   };
   return new Promise((res, rej) => {
     axios.post(STRINGS.url+'/addFavorite',data)

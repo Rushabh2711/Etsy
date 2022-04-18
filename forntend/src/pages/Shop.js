@@ -17,7 +17,6 @@ const Shop = (props) => {
     const [ShopDetailsData, setShopDetailsData] = useState([]);
     const isShop = true;
     var {shopId} = useParams();
-    shopId = parseInt(shopId)
     // var data;
     useEffect( async () => {
         try{
@@ -25,9 +24,9 @@ const Shop = (props) => {
             // const UsershopDetails = userId ? await getUserShopDetails(userId) : null;
             const data = shopId ? await getShopDetails(shopId) : await getUserShopDetails(userId);
             // console.log(products, "Products in shop");
-            // const currShop = shopId ? shopId : UsershopDetails.shop_id
+            // const currShop = shopId ? shopId : UsershopDetails._id
             setShopDetailsData(data)
-            setShopProducts(products.filter((p) => p.shop_id === data.shop_id));
+            setShopProducts(products.filter((p) => p.shop_id === data._id));
         }
         catch(error){
             console.log(error);

@@ -48,7 +48,7 @@ export default function ProductItem(props) {
 
   const handleImageClick = (e) => {
     dispatch(searchItem(""))
-    navigate( "/item/" + e.product_id);
+    navigate( "/item/" + e._id);
   }
 
   const handleEditClick = (e) => {
@@ -64,7 +64,7 @@ export default function ProductItem(props) {
     dispatch(searchItem(""))
   }
 
-  console.log("product items",products);
+  // console.log("product items",products);
   // var products = props.products;
   // const isUser = false;
   return (
@@ -110,7 +110,7 @@ export default function ProductItem(props) {
     </Grid>}
     <ImageList cols={5}>
       {products.map((item, index) => (
-        <ImageListItem key={item.product_id}  >
+        <ImageListItem key={item._id}  >
           <img
             src={`${item.image}?w=248&fit=crop&auto=format`}
             srcSet={`${item.image}?w=248&fit=crop&auto=format&dpr=2 2x`}

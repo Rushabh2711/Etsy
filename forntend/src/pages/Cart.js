@@ -11,9 +11,11 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import { Checkbox } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { createOrder, updateProduct, getProducts } from '../services/ProductService';
-import { clearCart, product } from '../actions';
+import { clearCart, product, addToCart, remeveFromCart } from '../actions';
 
 
 
@@ -41,10 +43,11 @@ const Cart = (props) => {
           var data = []; 
           cartItem.forEach(c => {
               products.forEach(p => {
-                  if(p.product_id === c.product_id) {
+                  if(p._id === c._id) {
                       data.push({
                         ...p,
                         quantity: c.quantity,
+                        gift: c.gift
                       })
                   }
               })
@@ -53,7 +56,10 @@ const Cart = (props) => {
           setCartData(data);
     },[products, cartItem]);
 
-
+    const handleRemoveClick = (e) => {
+      const data = cartItem.filter(p => p._id !== e._id);
+      dispatch(remeveFromCart(data));
+    }
 
 
     const handleCheckOutClick = async () => {
@@ -78,7 +84,7 @@ const Cart = (props) => {
         //   var newProduct = await getProducts();
         //   newProduct.forEach(p => {
         //     products.forEach(f => {
-        //         if(p.product_id === f.product_id && f.isFav) {
+        //         if(p._id === f._id && f.isFav) {
         //             p.isFav = true;
         //         }
         //     })
@@ -104,7 +110,7 @@ const Cart = (props) => {
                 </Box>
                 {/* <Divider /> */}
                 {cartData.map((item, index) => (
-                  <Items item={item}/>
+                  <Items item={item} handleRemoveClick={handleRemoveClick} />
                 ))}
                 {/* <Divider /> */}
                 <Box mt={2}>
@@ -119,9 +125,49 @@ const Cart = (props) => {
 }
 
 const Items = (props) => {
+
+    const dispatch = useDispatch();
     const currency = useSelector(state => state.Currency);
+    const cartItem = useSelector(state => state.CartItem);
+    const [addGift, setAddGift] = useState(false);
+    const [isItemAvailable, setIsItemAvailable] = useState(true);
     const p = props.item;
     
+    const handleItemchnage = (e) => {
+      if(e.target.value > p.count) {
+        setIsItemAvailable(false);
+      }
+      else {
+        setIsItemAvailable(true);
+        var data = cartItem;
+        data.forEach(d => {
+          if(d._id === p._id) {
+            d.quantity = e.target.value;
+          }
+        });
+        dispatch(remeveFromCart([...data]));
+      }
+  }
+
+  const handleCheckClick = (e) => {
+    if(e.target.checked) {
+      setAddGift(true);
+    }
+    else {
+      setAddGift(false);
+    }
+  }
+
+  const handleGiftChange = (e) => {
+    var data = cartItem;
+    data.forEach(d => {
+      if(d._id === p._id) {
+        d.gift = e.target.value;
+      }
+    });
+    dispatch(remeveFromCart([...data]));
+  }
+
     return (
         <Paper
         sx={{
@@ -133,7 +179,7 @@ const Items = (props) => {
             theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         }}
       >
-        <Grid container spacing={5} key={p.product_id}>
+        <Grid container spacing={5} key={p._id}>
           <Grid item>
             <ButtonBase sx={{ width: 128, height: 100 }}>
               <Img alt="complex" src={p.image} />
@@ -151,12 +197,28 @@ const Items = (props) => {
                 <Typography variant="body2" color="text.secondary">
                   {"Item Price: " + currency + " " + p.price}
                 </Typography>
+                <TextField id="quantity" 
+                    label="Quantity"
+                    sx={{mt:2}}
+                    error={!isItemAvailable}
+                    defaultValue={p.quantity}
+                    variant="outlined"
+                    type="number"
+                    onChange={(e) => handleItemchnage(e)}
+                    helperText={p.count + " items available"} />
+                    <div><Checkbox sx={{ color:'black' }} label="gift" onClick={(e) => handleCheckClick(e)}/>Add Gift Packing</div>
+                  {addGift && <TextField id="gift" 
+                   label="message"
+                   error={false} 
+                   variant="outlined"
+                   onChange={(e) => handleGiftChange(e)}
+                   margin="dense" />}
               </Grid>
-              {/* <Grid item>
-                <Typography sx={{ cursor: 'pointer' }} variant="body2">
+              <Grid item>
+                <Typography sx={{ cursor: 'pointer', textAlign: 'center', mr:2}} variant="subtitle1" onClick={() => props.handleRemoveClick(p)}>
                   Remove
                 </Typography>
-              </Grid> */}
+              </Grid>
             </Grid>
             <Grid item>
               <Typography variant="subtitle1" component="div">

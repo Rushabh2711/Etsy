@@ -31,11 +31,11 @@ const Login = (props) => {
     }
     axios.post(STRINGS.url+'/login',data)
         .then(response => {
-            // console.log("Status Code : ",response.data);
+            console.log("Status Code : ",response);
             if(response.status === 200){
                 props.handleClose();
-                dispatch(signin(response.data.user_id));
                 dispatch(userLogin({...response.data}));
+                dispatch(signin(response.data._id));
                 localStorage.setItem("userId", JSON.stringify(response.data));
             }else{
                 setIsError(true);

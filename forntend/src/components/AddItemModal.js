@@ -35,7 +35,7 @@ const AddItemModal = (props) => {
 
     const dispatch = useDispatch();
     const editProductData = useSelector(state => state.editProduct);
-    // console.log(editProductData.product_id);
+    // console.log(editProductData._id);
     const products = useSelector(state => state.Products);
     console.log("FROM MODAL ITEM",editProductData);
     // const [selectedImage, setSelectedImage] = useState(null);
@@ -76,14 +76,14 @@ const AddItemModal = (props) => {
 
     const handleImageuplod = async (e) => {
       console.log("info",e); 
-      const url = await insertImage(e.target.files[0],props.shopData.shop_id+props.shopData.name+Math.random());
+      const url = await insertImage(e.target.files[0],props.shopData._id+props.shopData.name+Math.random());
       setimage(url);
       console.log(url);
     }
 
     const handleSubmitClick = async () => {
       var data = {
-        shop_id: props.shopData.shop_id,
+        shop_id: props.shopData._id,
         category: Category,
         count: parseInt(quantity),
         name: productName,
@@ -93,9 +93,9 @@ const AddItemModal = (props) => {
         price: parseFloat(price)
       }
       try {
-        if(editProductData.product_id) {
+        if(editProductData._id) {
           // var data = {
-          //   shop_id: props.shopData.shop_id,
+          //   shop_id: props.shopData._id,
           //   category: Category ? Category : editProductData.category,
           //   count: editProductData.count ? editProductData.count : parseInt(quantity),
           //   name: editProductData.name ? editProductData.name : productName,
@@ -104,11 +104,11 @@ const AddItemModal = (props) => {
           //   sell_count: editProductData.sell_count ? editProductData.sell_count : 0,
           //   price: editProductData.price ? editProductData.price : parseInt(price)
           // }
-          await updateProduct({...data, product_id: editProductData.product_id})
+          await updateProduct({...data, _id: editProductData._id})
         }
         else if(userId) {
           // var data = {
-          //   shop_id: props.shopData.shop_id,
+          //   shop_id: props.shopData._id,
           //   category: Category,
           //   count: parseInt(quantity),
           //   name: productName,
@@ -125,7 +125,7 @@ const AddItemModal = (props) => {
         var newData = await getProducts();
         newData.forEach(p => {
             products.forEach(f => {
-                if(p.product_id === f.product_id && f.isFav) {
+                if(p._id === f._id && f.isFav) {
                     p.isFav = true;
                 }
             })

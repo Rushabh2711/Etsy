@@ -33,16 +33,16 @@ const MyOrder = (props) => {
         var newProduct = await getProducts();
         newProduct.forEach(p => {
             products.forEach(f => {
-                if(p.product_id === f.product_id && f.isFav) {
+                if(p._id === f._id && f.isFav) {
                     p.isFav = true;
                 }
             })
         });
         dispatch(product(newProduct));
         console.log(data);
-        data.forEach(d => {
-            d.products= [...JSON.parse(d.products)];
-        })
+        // data.forEach(d => {
+        //     d.products= [...JSON.parse(d.products)];
+        // })
         console.log("AFTERR APPPYT", data);
         setmyOrder(data);
     },[LoggedInUSer]);
@@ -57,7 +57,7 @@ const MyOrder = (props) => {
                     {myOrder.map((order, index) => {
                         return (
                             <div>
-                                <h1 style={{"text-align": "center"}}>Order: {order.order_id}</h1>
+                                <h3 style={{"text-align": "center"}}>Order: {order._id}</h3>
                                 <h4 style={{"text-align": "center"}}>Total Price: {order.price}</h4>
                                 <h4 style={{"text-align": "center"}}>{new Date(order.date).toDateString()}</h4>
                                 <Orders productData={order.products}/>
@@ -94,7 +94,7 @@ const OrderItems = (props) => {
             theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         }}
       >
-        <Grid container spacing={5} key={p.product_id}>
+        <Grid container spacing={5} key={p._id}>
           <Grid item>
             <ButtonBase sx={{ width: 128, height: 100 }}>
               <Img alt="complex" src={p.image} />
@@ -112,6 +112,9 @@ const OrderItems = (props) => {
                 <Typography variant="body2" color="text.secondary">
                   {"Item Price: " + currency + " " + p.price}
                 </Typography>
+                {p.gift && <Typography variant="body2">
+                  {"Gift Message: " + p.gift}
+                </Typography>}
               </Grid>
               {/* <Grid item>
                 <Typography sx={{ cursor: 'pointer' }} variant="body2">

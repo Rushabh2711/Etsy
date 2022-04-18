@@ -42,7 +42,7 @@ const FirstShop = (props) => {
             try {
                 const data = await addShopDetails(shopname, LoggedInUSer);
                 window.location.reload(false);
-                // navigate('/shop/' + data.shop_id);
+                // navigate('/shop/' + data._id);
             } catch (error) {
                 
             }

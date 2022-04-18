@@ -48,8 +48,8 @@ const ShopDetails = (props) => {
 
     const handleImageuplod = async (e) => {
         console.log("info",e); 
-        const url = await insertImage(e.target.files[0],props.shopData.shop_id);
-        const newData = await updateShopDetails(url,props.shopData.shop_id);
+        const url = await insertImage(e.target.files[0],props.shopData._id);
+        const newData = await updateShopDetails(url,props.shopData._id);
         setshopImage(url);
       }
 

@@ -15,7 +15,7 @@ import Shop from "./pages/Shop";
 import EditProfile from "./pages/EditProfile";
 import MyOrder from "./pages/MyOrder";
 import Item from "./pages/Item";
-import { signin, product } from './actions';
+import { signin, product, userLogin } from './actions';
 
 function App() {
 
@@ -29,11 +29,11 @@ function App() {
   useEffect( async () => {
     try{
         const data = await getProducts();
-        fav = LoggedInUSer ? await getFavorite(LoggedInUSer) : [];
+        fav = LoggedInUSer ? User.favorite : [];
     
         data.forEach(p => {
             fav.forEach(f => {
-                if(p.product_id === f.product_id) {
+                if(p._id === f) {
                     p.isFav = true;
                 }
             })
@@ -43,10 +43,10 @@ function App() {
         dispatch(product(data));
     }
     catch(error){
-        console.log(error)
+        console.log(error);
     }
     
-  },[LoggedInUSer]);
+  },[LoggedInUSer, User]);
 
 
   const handleIconclick = async (p) => {
@@ -54,8 +54,9 @@ function App() {
         if(p.isFav) {
             await removeFavorite(p, LoggedInUSer);
             products.forEach(i => {
-                if(i.product_id === p.product_id) {
+                if(i._id === p._id) {
                     i.isFav = false;
+                    User.favorite = User.favorite.filter(f => f !== p._id);
                 }
             })
             // setproducts([...products]);
@@ -64,13 +65,15 @@ function App() {
             await addFavotite(p, LoggedInUSer);
 
             products.forEach(i => {
-                if(i.product_id === p.product_id) {
+                if(i._id === p._id) {
                     i.isFav = true;
+                    User.favorite.push(p._id);
                 }
             });
             // setproducts([...products]);
         }
         dispatch(product([...products]));
+        dispatch(userLogin([...User]));
     } catch (error) {
         
     }

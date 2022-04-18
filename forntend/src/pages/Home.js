@@ -23,7 +23,7 @@ const Home = (props) => {
         const shopData = await getUserShopDetails(LoggedInUSer);
         if(shopData) {
             console.log("filter data", shopData);
-            const data = products.filter((p) => p.shop_id !== shopData.shop_id);
+            const data = products.filter((p) => p.shop_id !== shopData._id);
             console.log("DATA",data);
             setHomeProduct(data);
         }

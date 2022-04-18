@@ -46,6 +46,13 @@ export const addToCart = (data) => {
     }
 };
 
+export const remeveFromCart = (data) => {
+    return {
+        type: 'REMOVECART',
+        payload : data
+    }
+};
+
 export const clearCart = () => {
     return {
         type: 'CLEARCART',
