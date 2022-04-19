@@ -1,4 +1,5 @@
 const express = require("express");
+require("./database");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const orderRouter = require("./routes/order");
@@ -13,7 +14,7 @@ const app = express();
 app.use(express.json());
 
 var corsOptions = {
-    'origin': "http://3.144.44.39:3000",
+    'origin': "http://localhost:3000",
     'Access-Control-Allow-Origin': '*',
     'credentials': 'true'
   };
