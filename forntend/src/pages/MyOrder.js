@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
+import TablePagination from '@mui/material/TablePagination';
 
 const Img = styled('img')({
     margin: 'auto',
@@ -27,6 +28,9 @@ const MyOrder = (props) => {
     const LoggedInUSer = useSelector(state => state.LoggedInUSer);
     const products = useSelector(state => state.Products);
     const [myOrder, setmyOrder] = useState();
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
+
     var data = [];
     useEffect( async () => {
         data = await getOrder(LoggedInUSer);
@@ -48,13 +52,34 @@ const MyOrder = (props) => {
     },[LoggedInUSer]);
 
 
+    const handleChangePage = (event, newPage) => {
+      setPage(newPage);
+    };
+  
+    const handleChangeRowsPerPage = (event) => {
+      setRowsPerPage(parseInt(event.target.value, 10));
+      parseInt(event.target.value);
+      setPage(0);
+    };
+
    return(
         <div>
             <Navbar/>
             {myOrder && <Box mt={2}>
                     <h1 style={{"text-align": "center"}}>My Purchases</h1>
                     <Divider />
-                    {myOrder.map((order, index) => {
+                    <TablePagination
+                      rowsPerPageOptions={[2, 5, 10]}
+                      component="div"
+                      count={myOrder.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={(e) => handleChangeRowsPerPage(e)}
+                    />
+                    {(rowsPerPage > 0
+                      ? myOrder.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      : myOrder).map((order, index) => {
                         return (
                             <div>
                                 <h3 style={{"text-align": "center"}}>Order: {order._id}</h3>

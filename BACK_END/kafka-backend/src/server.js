@@ -2,7 +2,9 @@ var connection =  new require('./kafka/Connection');
 require("./database");
 //topics files
 //var signin = require('./services/signin.js');
-var User = require('./services/User');
+var User = require('./handleServices/User');
+var Product = require('./handleServices/Product');
+var Order = require('./handleServices/Order');
 
 function handleTopicRequest(topic_name,fname){
     //var topic_name = 'root_topic';
@@ -37,3 +39,6 @@ function handleTopicRequest(topic_name,fname){
 //first argument is topic name
 //second argument is a function that will handle this topic request
 handleTopicRequest("register",User)
+handleTopicRequest("createOrder",Order)
+handleTopicRequest("addToFav",Product)
+
