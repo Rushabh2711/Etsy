@@ -14,7 +14,8 @@ const app = express();
 app.use(express.json());
 
 var corsOptions = {
-    'origin': "http://localhost:3000",
+    // 'origin': "http://localhost:3000",
+    'origin': "http://34.230.84.195:3000",
     'Access-Control-Allow-Origin': '*',
     'credentials': 'true'
   };
@@ -29,7 +30,8 @@ app.use(imageUpload);
 
 function configureCors() {
     const whitelist = [
-      "http://localhost:3000",
+      // "http://localhost:3000",
+      "http://34.230.84.195:3000",
     ];
   
     const corsOptionsDelegate = (req, callback) => {
