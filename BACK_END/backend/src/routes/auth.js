@@ -13,7 +13,6 @@ router.post('/login', async (req, res) => {
             return;
         }
         const payload = { _id : user._id, username: user.username };
-            console.log(payload);
             const token = await jwt.sign(payload, secret, {
                     expiresIn: 1008000,
             });
@@ -34,12 +33,12 @@ router.post('/getUserData', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
-    // try {
-    //     const user = await User.registerUser(req.body);
-    //     res.status(200).send(user);
-    // } catch (e) {
-    //     res.status(400).send(e);
-    // }
+    try {
+        const user = await User.registerUser(req.body);
+        res.status(200).send(user);
+    } catch (e) {
+        res.status(400).send(e);
+    }
     // ------------------------------------------------------------------------------
     // kafka.make_request('register',req.body, function(err,results){
     //     console.log('in result');

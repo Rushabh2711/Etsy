@@ -114,7 +114,7 @@ const Cart = (props) => {
                 ))}
                 {/* <Divider /> */}
                 <Box mt={2}>
-                    <h1 style={{"text-align": "center"}}>{"Total Price: " + total}</h1>
+                    <h1 style={{"text-align": "center"}}>{"Total Price: " + Math.round(total*100)/100}</h1>
                     <Box textAlign='center'>
                         <Button sx={{ m: 2 }} style={{backgroundColor: "#000000", color: "#ffffff"}} size="small" onClick={handleCheckOutClick}>proceed to checkout</Button>
                     </Box>
@@ -136,6 +136,9 @@ const Items = (props) => {
     const handleItemchnage = (e) => {
       if(e.target.value > p.count) {
         setIsItemAvailable(false);
+      }
+      else if(e.target.value == 0) {
+        props.handleRemoveClick(p);
       }
       else {
         setIsItemAvailable(true);
@@ -175,6 +178,8 @@ const Items = (props) => {
           margin: 'auto',
           maxWidth: 700,
           flexGrow: 1,
+          boxShadow: 10,
+          mt:2,
           backgroundColor: (theme) =>
             theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         }}
@@ -215,7 +220,7 @@ const Items = (props) => {
                    margin="dense" />}
               </Grid>
               <Grid item>
-                <Typography sx={{ cursor: 'pointer', textAlign: 'center', mr:2}} variant="subtitle1" onClick={() => props.handleRemoveClick(p)}>
+                <Typography sx={{ cursor: 'pointer', textAlign: 'center', mr:2, color: 'red'}} variant="subtitle1" onClick={() => props.handleRemoveClick(p)}>
                   Remove
                 </Typography>
               </Grid>
@@ -227,7 +232,6 @@ const Items = (props) => {
             </Grid>
           </Grid>
         </Grid>
-        <Divider />
       </Paper>
     );
 }

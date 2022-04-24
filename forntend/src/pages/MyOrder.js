@@ -12,6 +12,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
+import { Container } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
 
 const Img = styled('img')({
@@ -78,16 +79,15 @@ const MyOrder = (props) => {
                       onRowsPerPageChange={(e) => handleChangeRowsPerPage(e)}
                     />
                     {(rowsPerPage > 0
-                      ? myOrder.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      ? myOrder.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                       : myOrder).map((order, index) => {
                         return (
-                            <div>
-                                <h3 style={{"text-align": "center"}}>Order: {order._id}</h3>
+                          <Container maxWidth="md" sx={{ boxShadow: 10, mb: 5}}>
+                                <h3 style={{"text-align": "center"}}>Order No: {order._id}</h3>
                                 <h4 style={{"text-align": "center"}}>Total Price: {order.price}</h4>
                                 <h4 style={{"text-align": "center"}}>{new Date(order.date).toDateString()}</h4>
                                 <Orders productData={order.products}/>
-                                <Divider />
-                            </div>
+                          </Container>
                         );  
                     }
                     )}
@@ -115,6 +115,8 @@ const OrderItems = (props) => {
           margin: 'auto',
           maxWidth: 700,
           flexGrow: 1,
+          boxShadow: 3,
+          mt:2,
           backgroundColor: (theme) =>
             theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         }}
@@ -154,7 +156,6 @@ const OrderItems = (props) => {
             </Grid>
           </Grid>
         </Grid>
-        <Divider />
       </Paper>
     );
 }

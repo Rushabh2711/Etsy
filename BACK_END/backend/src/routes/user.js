@@ -6,7 +6,7 @@ const router = new express.Router();
 router.post('/favorite', async (req, res) => {
     try {
         const fav_list = await User.findFavorite(req.body.user_id);
-        console.log(fav_list);
+        // console.log(fav_list);
         res.status(200).send(fav_list);
     } catch (e) {
         res.status(400).send(e);

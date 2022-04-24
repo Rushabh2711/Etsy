@@ -18,8 +18,8 @@ class Order {
                 ...order
             })
             try {
-                await newOrder.save();
-                res();
+                var data = await newOrder.save();
+                res(data);
             } catch (e) {
                 rej(e)
             }
