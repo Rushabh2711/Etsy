@@ -30,7 +30,7 @@ const MyOrder = (props) => {
     const products = useSelector(state => state.Products);
     const [myOrder, setmyOrder] = useState();
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(2);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     var data = [];
     useEffect( async () => {
