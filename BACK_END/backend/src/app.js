@@ -5,6 +5,8 @@ const userRouter = require("./routes/user");
 const orderRouter = require("./routes/order");
 const productRouter = require("./routes/product");
 const imageUpload = require("./routes/imageUpload");
+const schema = require("./graphql/config");
+const { graphqlHTTP } = require("express-graphql");
 const cors = require('cors');
 
 
@@ -14,8 +16,8 @@ const app = express();
 app.use(express.json());
 
 var corsOptions = {
-    // 'origin': "http://localhost:3000",
-    'origin': "http://34.230.84.195:3000",
+    'origin': "http://localhost:3000",
+    // 'origin': "http://34.230.84.195:3000",
     'Access-Control-Allow-Origin': '*',
     'credentials': 'true'
   };
@@ -27,11 +29,18 @@ app.use(userRouter);
 app.use(orderRouter);
 app.use(productRouter);
 app.use(imageUpload);
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema,
+    graphiql: true,
+  })
+);
 
 function configureCors() {
     const whitelist = [
-      // "http://localhost:3000",
-      "http://34.230.84.195:3000",
+      "http://localhost:3000",
+      // "http://34.230.84.195:3000",
     ];
   
     const corsOptionsDelegate = (req, callback) => {
