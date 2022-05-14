@@ -1,6 +1,6 @@
 const express = require('express');
 const User = require('../service/User');
-var kafka = require('../kafka/client');
+// var kafka = require('../kafka/client');
 const router = new express.Router();
 
 router.post('/favorite', async (req, res) => {
@@ -14,27 +14,27 @@ router.post('/favorite', async (req, res) => {
 });
 
 router.post('/addFavorite', async (req, res) => {
-    // try {
-    //     await User.addToFavorite(req.body.user_id, req.body.product_id);
-    //     res.status(200).send();
-    // } catch (e) {
-    //     res.status(400).send(e);
-    // }
+    try {
+        await User.addToFavorite(req.body.user_id, req.body.product_id);
+        res.status(200).send();
+    } catch (e) {
+        res.status(400).send(e);
+    }
 
-    kafka.make_request('addToFav',req.body, function(err,results){
-        console.log('in result');
-        console.log(results);
-        if (err){
-            console.log("Inside err");
-            res.json({
-                status:"error",
-                msg:"System Error, Try Again."
-            })
-        }else{
-            console.log("Inside else");
-            res.status(200).send();
-            }
-    });
+    // kafka.make_request('addToFav',req.body, function(err,results){
+    //     console.log('in result');
+    //     console.log(results);
+    //     if (err){
+    //         console.log("Inside err");
+    //         res.json({
+    //             status:"error",
+    //             msg:"System Error, Try Again."
+    //         })
+    //     }else{
+    //         console.log("Inside else");
+    //         res.status(200).send();
+    //         }
+    // });
 });
 
 router.post('/removeFavorite', async (req, res) => {
