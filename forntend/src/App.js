@@ -16,6 +16,29 @@ import EditProfile from "./pages/EditProfile";
 import MyOrder from "./pages/MyOrder";
 import Item from "./pages/Item";
 import { signin, product, userLogin } from './actions';
+import {
+  ApolloClient,
+  ApolloProvider,
+  from,
+  HttpLink,
+  InMemoryCache,
+} from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
+
+const errorLink = onError(({ graphqlErrors, networkError }) => {
+  if (graphqlErrors) {
+    graphqlErrors.map(({ message, location, path }) => {
+      console.log(message);
+    });
+  }
+});
+
+const link = from([
+  errorLink,
+  new HttpLink({ uri: "http://localhost:3001/graphql" }),
+]);
+
+const client = new ApolloClient({ cache: new InMemoryCache(), link });
 
 function App() {
 
@@ -84,6 +107,7 @@ function App() {
     <div className="App">
       {/* <Navbar/>
         <ProductItem/> */}
+        <ApolloProvider client={client}>
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home handleIconclick={handleIconclick}/>} />
@@ -96,6 +120,7 @@ function App() {
               <Route path="/item/:itemId" element={<Item handleIconclick={handleIconclick}/>} />
             </Routes>
           </BrowserRouter>
+          </ApolloProvider>
       {/* <Footer/> */}
     </div>
   );
