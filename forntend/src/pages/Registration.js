@@ -8,6 +8,8 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import STRINGS from '../constant';
 import axios from 'axios';
+import { useMutation } from "@apollo/client";
+import { REGISTER_USER } from "../graphql/mutations";
 
 
 
@@ -17,6 +19,7 @@ const Registration = (props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [createUser, { error }] = useMutation(REGISTER_USER);
 
 
   const handleRegistration = () => {
@@ -24,24 +27,31 @@ const Registration = (props) => {
       setIsError(true);
       return;
     }
+    createUser({
+      variables: {
+        email: email,
+        password: password,
+        username: username
+      },
+    });
     var data = {
       username,
       password,
       email
     };
-    axios.post(STRINGS.url+'/register',data)
-        .then(response => {
-            console.log("Status Code : ",response.data);
-            if(response.status === 200){
-              props.handleClose()
-              setIsError(false);
-              props.loginOpen();
-            }else{
-              setIsError(true);
-            }
-        }).catch(c => {
-          setIsError(true);
-        });
+    // axios.post(STRINGS.url+'/register',data)
+    //     .then(response => {
+    //         console.log("Status Code : ",response.data);
+    //         if(response.status === 200){
+    //           props.handleClose()
+    //           setIsError(false);
+    //           props.loginOpen();
+    //         }else{
+    //           setIsError(true);
+    //         }
+    //     }).catch(c => {
+    //       setIsError(true);
+    //     });
   }
 
    const style = {

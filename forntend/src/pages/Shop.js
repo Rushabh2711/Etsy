@@ -7,6 +7,8 @@ import FirstShop from '../components/FirstShop';
 import ShopDetails from '../components/ShopDetails';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getShopDetails, getUserShopDetails } from '../services/ShopService';
+import { useQuery } from "@apollo/client";
+import { GET_SHOP_PRODUCTS, GET_SHOP } from "../graphql/queries";
 
 
 const Shop = (props) => {

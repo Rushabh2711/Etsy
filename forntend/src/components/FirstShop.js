@@ -6,6 +6,8 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import { addShopDetails, checkShopAvailability } from '../services/ShopService';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from "@apollo/client";
+import { SHOPNAME_AVAILABILITY } from "../graphql/queries";
 
 
 
@@ -17,6 +19,7 @@ const FirstShop = (props) => {
     const [isAvailable, setIsAvailable] = React.useState(true);
     const [canCreate, setcanCreate] = React.useState(false);
     const LoggedInUSer = useSelector(state => state.LoggedInUSer);
+    // const [getShopNameAvailability, { error }] = useQuery(SHOPNAME_AVAILABILITY);
 
 
     const handleAvailabilitybutttonClick = async () => {

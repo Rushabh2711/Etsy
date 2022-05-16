@@ -11,6 +11,9 @@ import { getUserDetails, insertImage } from '../services/UserService';
 import {updateShopDetails} from '../services/ShopService';
 import { editProduct } from '../actions';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_USER } from "../graphql/queries";
+import { EDIT_SHOP } from "../graphql/mutations"
 
 
 
@@ -25,6 +28,10 @@ const ShopDetails = (props) => {
     const [openAddItem, setopenAddItem] = useState(false);
     const [shopImage, setshopImage] = useState();
     const [shopOwner, setshopOwner] = useState({});
+
+    const [editShop, { error }] = useMutation(EDIT_SHOP);
+    // const [getUserProfile, { error }] = useQuery(GET_USER);
+
     const handleAddItemClick = () => setopenAddItem(true);
     const handleAddItemClose = () => {
         setopenAddItem(false);

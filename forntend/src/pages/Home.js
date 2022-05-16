@@ -8,6 +8,8 @@ import {getProducts, getFavorite, removeFavorite, addFavotite} from '../services
 import { getUserShopDetails } from '../services/ShopService';
 import { handleBreakpoints } from '@mui/system';
 import { signin, product } from '../actions';
+import { useQuery } from "@apollo/client";
+import { GET_PRODUCT } from "../graphql/queries";
 
 const Home = (props) => {
 
@@ -16,6 +18,8 @@ const Home = (props) => {
     const products = useSelector(state => state.Products);
     const [homeProduct, setHomeProduct] = useState();
     const User = useSelector(state => state.User);
+    const [getProduct, { error }] = useQuery(GET_PRODUCT);
+
     const dispatch = useDispatch();
 
    useEffect( async () => {

@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 import { Container } from '@mui/material';
 import TablePagination from '@mui/material/TablePagination';
+import { useQuery } from "@apollo/client";
+import { GET_ORDERS } from "../graphql/queries";
 
 const Img = styled('img')({
     margin: 'auto',

@@ -15,6 +15,8 @@ import FormControl from '@mui/material/FormControl';
 import { addProducts, getProducts, updateProduct } from '../services/ProductService';
 import { product } from '../actions';
 import { insertImage } from '../services/UserService';
+import { useMutation } from "@apollo/client";
+import { REGISTER_USER } from "../graphql/mutations";
 
 
 
@@ -39,6 +41,7 @@ const AddItemModal = (props) => {
     const products = useSelector(state => state.Products);
     console.log("FROM MODAL ITEM",editProductData);
     // const [selectedImage, setSelectedImage] = useState(null);
+    const [addProduct, { error }] = useMutation(REGISTER_USER);
 
     const [productName, setProductName] = useState(editProductData.name);
     const [description, setDescription] = useState(editProductData.description);
@@ -107,17 +110,23 @@ const AddItemModal = (props) => {
           await updateProduct({...data, _id: editProductData._id})
         }
         else if(userId) {
-          // var data = {
-          //   shop_id: props.shopData._id,
-          //   category: Category,
-          //   count: parseInt(quantity),
-          //   name: productName,
-          //   description: description,
-          //   image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
-          //   sell_count: 0,
-          //   price: parseInt(price)
-          // }
-            await addProducts(data);
+          var data = {
+            shop_id: props.shopData._id,
+            category: Category,
+            count: parseInt(quantity),
+            name: productName,
+            description: description,
+            image: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+            sell_count: 0,
+            price: parseInt(price)
+          }
+            // await addProducts(data);
+            addProduct({
+              variables: {
+                ...data
+              },
+            });
+
             // var newData = await getProducts();
             // props.handleAddItemClose();
             // dispatch(product(newData));

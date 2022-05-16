@@ -12,6 +12,8 @@ import { countryList } from '../country';
 import { useNavigate } from 'react-router-dom';
 import { updateUserDetails } from '../services/UserService';
 import { userLogin } from '../actions';
+import { useMutation } from "@apollo/client";
+import { EDIT_USER } from "../graphql/mutations";
 
 const EditProfile = (props) => {
 
@@ -20,6 +22,8 @@ const EditProfile = (props) => {
 
     const userData = useSelector(state => state.User);
     const userId = useSelector(state => state.LoggedInUSer);
+
+    const [editUser, { error }] = useMutation(EDIT_USER);
 
     const [birthDate, setBirthDate] = useState();
     const [country, setcountry] = useState("United States");
